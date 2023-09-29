@@ -1,0 +1,11 @@
+{% block content %}
+
+    <div style=" display: flex; align-items: center; justify-content: center;" class="login-box auth0-box before">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Entrar</button>
+        </form>        
+    </div>
+
+{% endblock %}
