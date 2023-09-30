@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
-from .. import producer
-from .. import subscriber
+from interfaceapp import producer
+from interfaceapp import subscriber
 
 def index(request):
     return render(request, 'index.html')
