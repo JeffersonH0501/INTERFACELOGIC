@@ -31,8 +31,7 @@ def login_view(request):
                 return redirect('pagina_principal')
     else:
         form = LoginForm()
-    
-    print("Usuario invalido")
+        
     return render(request, 'index.html', {'form': form})
 
 def pagina_principal(request):
