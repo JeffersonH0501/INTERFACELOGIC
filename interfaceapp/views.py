@@ -19,7 +19,7 @@ def login_view(request):
             respuesta = subscriber.recibir_respuesta_autenticacion()
 
             print(respuesta)
-            if respuesta is not None:
+            if respuesta == "INVALIDO":
                 return redirect('index.thml')  
     
     else:

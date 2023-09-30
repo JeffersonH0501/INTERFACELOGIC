@@ -10,7 +10,7 @@ topics = ['LOGIN']
 
 request_id = str(uuid.uuid4())
 
-def callback(ch, method, properties, body):
+def callback(ch, method, body):
     response = json.loads(body)
     if 'request_id' in response and response['request_id'] == request_id:
         print(f'Respuesta recibida para la solicitud {request_id}: {response}')
@@ -31,7 +31,7 @@ def recibir_respuesta_autenticacion():
     # Configurar el consumo de la cola de respuestas
     channel.basic_consume(queue=response_queue, on_message_callback=callback, auto_ack=True)
 
-    print(f'> Esperando respuesta para la solicitud {request_id}. Para salir, presiona CTRL+C')
+    print(f'> Esperando respuesta para la solicitud {request_id}.')
 
     # Comenzar a consumir mensajes
     channel.start_consuming()

@@ -14,13 +14,14 @@ def enviar_peticion_autenticacion(usuario, clave):
     channel = connection.channel()
     channel.exchange_declare(exchange=exchange, exchange_type='topic')
 
+    """
     usuario_dicc = {
         'usuario': usuario,
         'clave': clave,
     }
-
+    
     payload = json.dumps(usuario_dicc)
-
-    channel.basic_publish(exchange=exchange, routing_key=topic, body=payload)
+    """
+    channel.basic_publish(exchange=exchange, routing_key=topic, body=f"{usuario} {clave}")
 
     print('> Peticion de autenticacion´enviada')
