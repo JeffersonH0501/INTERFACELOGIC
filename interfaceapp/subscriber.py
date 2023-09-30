@@ -15,7 +15,7 @@ def callback(ch, method, body):
     print(response)
     if 'request_id' in response and response['request_id'] == request_id:
         print(f'Respuesta recibida para la solicitud {request_id}: {response}')
-        return response
+    return response
         
 def recibir_respuesta_autenticacion():
     
