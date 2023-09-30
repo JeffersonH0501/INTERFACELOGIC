@@ -9,7 +9,7 @@ topics = ['LOGIN']
 respuesta_autenticacion = ""  # Variable global para almacenar la respuesta
 
 def callback(ch, method, properties, body):
-
+    global respuesta_autenticacion  # Indica que estamos utilizando la variable global
     respuesta_autenticacion = body.decode('utf-8')
     print(respuesta_autenticacion)
         

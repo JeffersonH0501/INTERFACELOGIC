@@ -20,12 +20,19 @@ def login_view(request):
 
             response = subscriber.respuesta_autenticacion
 
+            print(response)
             if response == "VALIDO":
-                return render(request, 'pagina_principal.html', {'form': form})
+                # Redirige a la página principal si la respuesta es "VALIDO"
+                return redirect('pagina_principal')
     else:
         form = LoginForm()
     
+    print("Usuario invalido")
     return render(request, 'index.html', {'form': form})
+
+def pagina_principal(request):
+    # Lógica para la vista de la página principal
+    return render(request, 'pagina_principal.html')
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Usuario")
