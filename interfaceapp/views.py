@@ -8,6 +8,7 @@ def index(request):
     return render(request, 'index.html')
 
 def login_view(request):
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -16,11 +17,13 @@ def login_view(request):
 
             print(username, password)
             producer.enviar_peticion_autenticacion(username, password)
+            subscriber.respuesta_autenticacion = ""  # Restablece la respuesta
+            subscriber.detener_consumo = False  # Restablece la bandera
             subscriber.recibir_respuesta_autenticacion() 
-
             response = subscriber.respuesta_autenticacion
+            subscriber.detener_consumo = True
 
-            print(response)
+            print(response, "eeeee")
             if response == "VALIDO":
                 # Redirige a la página principal si la respuesta es "VALIDO"
                 return redirect('pagina_principal')

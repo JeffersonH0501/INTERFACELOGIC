@@ -7,11 +7,14 @@ exchange = 'loginauthentication_users'
 topics = ['LOGIN']
 
 respuesta_autenticacion = ""  # Variable global para almacenar la respuesta
+detener_consumo = False  # Bandera para detener la consumición
 
 def callback(ch, method, properties, body):
     global respuesta_autenticacion  # Indica que estamos utilizando la variable global
+    global detener_consumo  # Indica que estamos utilizando la bandera global
     respuesta_autenticacion = body.decode('utf-8')
     print(respuesta_autenticacion)
+    detener_consumo = True
         
 def recibir_respuesta_autenticacion():
     
@@ -32,6 +35,7 @@ def recibir_respuesta_autenticacion():
     print('> Esperando respuesta para la solicitud.')
 
     # Comenzar a consumir mensajes
-    channel.start_consuming()
+    while not detener_consumo:
+        connection.process_data_events()
 
 
