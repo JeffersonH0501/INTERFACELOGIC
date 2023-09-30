@@ -1,6 +1,7 @@
 import pika
 import json
 import uuid
+import views
 
 rabbit_host = '10.128.0.2'
 rabbit_user = 'broker_user'
@@ -8,14 +9,16 @@ rabbit_password = 'isis2503'
 exchange = 'loginauthentication_users'
 topics = ['LOGIN']
 
-request_id = str(uuid.uuid4())
+def callback(ch, method, properties, body):
 
-def callback(ch, method, body):
     response = body.decode('utf-8')
+    if response == "INVALIDO":
+        views.no_entrar()
+    else:
+        views.entrar()
     print(response)
-    if 'request_id' in response and response['request_id'] == request_id:
-        print(f'Respuesta recibida para la solicitud {request_id}: {response}')
-    return response
+    
+    pass
         
 def recibir_respuesta_autenticacion():
     
@@ -24,15 +27,20 @@ def recibir_respuesta_autenticacion():
 
     # Declarar el intercambio (exchange) de mensajes
     channel.exchange_declare(exchange=exchange, exchange_type='topic')
+    result = channel.queue_declare('', exclusive=True)
+    queue_name = result.method.queue
 
-    # Declarar la cola para las respuestas
-    response_queue = f'RESPUESTA_{request_id}'
-    channel.queue_declare(queue=response_queue)
+    for topic in topics:
+        channel.queue_bind(exchange=exchange, queue=queue_name, routing_key=topic)
 
     # Configurar el consumo de la cola de respuestas
-    channel.basic_consume(queue=response_queue, on_message_callback=callback, auto_ack=True)
+    channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
 
-    print(f'> Esperando respuesta para la solicitud {request_id}.')
+    print('> Esperando respuesta para la solicitud.')
 
     # Comenzar a consumir mensajes
     channel.start_consuming()
+
+    pass
+
+
