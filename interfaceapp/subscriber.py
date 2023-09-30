@@ -1,7 +1,4 @@
 import pika
-import json
-import uuid
-from interfaceapp import views
 
 rabbit_host = '10.128.0.2'
 rabbit_user = 'broker_user'
@@ -9,16 +6,12 @@ rabbit_password = 'isis2503'
 exchange = 'loginauthentication_users'
 topics = ['LOGIN']
 
+respuesta_autenticacion = ""  # Variable global para almacenar la respuesta
+
 def callback(ch, method, properties, body):
 
-    response = body.decode('utf-8')
-    if response == "INVALIDO":
-        views.no_entrar()
-    else:
-        views.entrar()
-    print(response)
-
-    pass
+    respuesta_autenticacion = body.decode('utf-8')
+    print(respuesta_autenticacion)
         
 def recibir_respuesta_autenticacion():
     
@@ -40,7 +33,5 @@ def recibir_respuesta_autenticacion():
 
     # Comenzar a consumir mensajes
     channel.start_consuming()
-
-    pass
 
 

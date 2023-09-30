@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django import forms
+from django.template import RequestContext
 from interfaceapp import producer
 from interfaceapp import subscriber
 
@@ -15,17 +16,16 @@ def login_view(request):
 
             print(username, password)
             producer.enviar_peticion_autenticacion(username, password)
-            subscriber.recibir_respuesta_autenticacion(request)            
+            subscriber.recibir_respuesta_autenticacion() 
+
+            response = subscriber.respuesta_autenticacion
+
+            if response == "VALIDO":
+                return render(request, 'pagina_principal.html', {'form': form})
     else:
         form = LoginForm()
     
-    pass
-
-def entrar(request=None):
-    return render(request, 'pagina_principal.html')
-
-def no_entrar(request=None):
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'form': form})
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Usuario")
