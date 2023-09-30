@@ -16,4 +16,4 @@ def enviar_peticion_autenticacion(usuario, clave):
 
     channel.basic_publish(exchange=exchange, routing_key=topic, body=f"{usuario} {clave}")
 
-    print('> Peticion de autenticacion enviada')
+    print('> Solicitud de autenticacion enviada')

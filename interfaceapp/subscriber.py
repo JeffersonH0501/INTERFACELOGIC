@@ -13,7 +13,6 @@ def callback(ch, method, properties, body):
     global respuesta_autenticacion  # Indica que estamos utilizando la variable global
     global detener_consumo  # Indica que estamos utilizando la bandera global
     respuesta_autenticacion = body.decode('utf-8')
-    print(respuesta_autenticacion)
     detener_consumo = True
         
 def recibir_respuesta_autenticacion():

@@ -15,7 +15,8 @@ def login_view(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
 
-            print(username, password)
+            print("> usuario: "+username+", clave: "+password)
+
             producer.enviar_peticion_autenticacion(username, password)
             subscriber.respuesta_autenticacion = ""  # Restablece la respuesta
             subscriber.detener_consumo = False  # Restablece la bandera
@@ -23,7 +24,8 @@ def login_view(request):
             response = subscriber.respuesta_autenticacion
             subscriber.detener_consumo = True
 
-            print(response, "eeeee")
+            print("> La respuesta de la solicitud es: "+response)
+
             if response == "VALIDO":
                 # Redirige a la página principal si la respuesta es "VALIDO"
                 return redirect('pagina_principal')
