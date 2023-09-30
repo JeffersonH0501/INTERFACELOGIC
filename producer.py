@@ -8,13 +8,11 @@ rabbit_password = 'isis2503'
 exchange = 'loginauthentication_users'
 topic = 'AUTENTICACION'
 
-try:
+def enviar_peticion_autenticacion(usuario, clave):
+    
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbit_host, credentials=pika.PlainCredentials(rabbit_user, rabbit_password)))
     channel = connection.channel()
     channel.exchange_declare(exchange=exchange, exchange_type='topic')
-
-    usuario = input("Ingresa el nombre de usuario: ")
-    clave = input("Ingresa la clave: ")
 
     usuario_dicc = {
         'usuario': usuario,
@@ -25,12 +23,4 @@ try:
 
     channel.basic_publish(exchange=exchange, routing_key=topic, body=payload)
 
-    print('> Enviando peticion de autenticacion')
-
-except KeyboardInterrupt:
-    print("Saliendo del programa.")
-
-finally:
-
-    if connection.is_open:
-        connection.close()
+    print('> Peticion de autenticacion´enviada')

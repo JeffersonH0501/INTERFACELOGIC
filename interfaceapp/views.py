@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django import forms
-from django.contrib.auth import authenticate, login
+from .. import producer
+from .. import subscriber
 
 def index(request):
     return render(request, 'index.html')
@@ -11,11 +12,15 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                # Redirige a la página de inicio o a donde desees
-                return redirect('index.thml')  # Reemplaza 'nombre_de_la_vista' por el nombre de tu vista principal
+
+            print(username, password)
+            producer.enviar_peticion_autenticacion(username, password)
+
+            respuesta = subscriber.recibir_respuesta_autenticacion()
+
+            print(respuesta)
+            if respuesta is not None:
+                return redirect('index.thml')  
     
     else:
         form = LoginForm()
