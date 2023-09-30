@@ -1,7 +1,7 @@
 import pika
 import json
 import uuid
-import views
+from interfaceapp import views
 
 rabbit_host = '10.128.0.2'
 rabbit_user = 'broker_user'
@@ -17,7 +17,7 @@ def callback(ch, method, properties, body):
     else:
         views.entrar()
     print(response)
-    
+
     pass
         
 def recibir_respuesta_autenticacion():

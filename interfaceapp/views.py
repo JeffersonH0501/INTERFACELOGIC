@@ -15,17 +15,17 @@ def login_view(request):
 
             print(username, password)
             producer.enviar_peticion_autenticacion(username, password)
-            subscriber.recibir_respuesta_autenticacion()            
+            subscriber.recibir_respuesta_autenticacion(request)            
     else:
         form = LoginForm()
     
     pass
 
-def entrar():
-    return render('pagina_principal.html')
+def entrar(request=None):
+    return render(request, 'pagina_principal.html')
 
-def no_entrar():
-    return render('index.html')
+def no_entrar(request=None):
+    return render(request, 'index.html')
 
 class LoginForm(forms.Form):
     username = forms.CharField(label="Usuario")
