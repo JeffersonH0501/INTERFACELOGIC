@@ -33,7 +33,7 @@
 
 				<form class="login100-form validate-form" action="/" method="post">
 
-					<!--{% csrf_token %} -->
+					{% csrf_token %}
 
 					<span class="login100-form-title">
 						Inicio de Sesión
@@ -54,12 +54,10 @@
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
 					</div>
-					
-					<!--
+							
 					{% if error_message %}
 					<div id="error-message" style="color: red;">{{ error_message }}</div>
 					{% endif %}
-					-->
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn" type="submit">

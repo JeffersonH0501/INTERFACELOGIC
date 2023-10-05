@@ -33,12 +33,12 @@ def vista_login(request):
             elif response == "INVALIDO":
                 error_message = "Usuario/Clave incorrecto"
                 context = {'form': form, 'error_message': error_message}
-                return render(request, 'pagina_login.html', context)
+                return render(request, 'pagina_login_nuevo.html', context)
                 
     else:
         form = LoginForm()
 
-    return render(request, 'pagina_login.html')
+    return render(request, 'pagina_login_nuevo.html')
 
 def vista_principal(request):
     return render(request, 'pagina_principal.html')
