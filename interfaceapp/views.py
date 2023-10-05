@@ -4,40 +4,36 @@ from django.template import RequestContext
 from interfaceapp import producer
 from interfaceapp import subscriber
 
-def index(request):
-    return render(request, 'index.html')
-
-def login_view(request):
+def vista_login(request):
 
     if request.method == 'POST':
+
         form = LoginForm(request.POST)
+
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+            
+            usuario = form.cleaned_data['usuario']
+            clave = form.cleaned_data['clave']
 
-            print("> usuario: "+username+", clave: "+password)
+            print("> usuario: " + usuario + ", clave: " + clave)
 
-            producer.enviar_peticion_autenticacion(username, password)
+            producer.enviar_peticion_autenticacion(usuario, clave)
             subscriber.respuesta_autenticacion = ""  # Restablece la respuesta
             subscriber.detener_consumo = False  # Restablece la bandera
             subscriber.recibir_respuesta_autenticacion() 
             response = subscriber.respuesta_autenticacion
             subscriber.detener_consumo = True
 
-            print("> La respuesta de la solicitud es: "+response)
+            print("> La respuesta de la solicitud es: " + response)
 
             if response == "VALIDO":
-                # Redirige a la página principal si la respuesta es "VALIDO"
-                return redirect('pagina_principal')
-    else:
-        form = LoginForm()
+                return redirect('principal')
         
-    return render(request, 'index.html')
+    return render(request, 'pagina_login.html')
 
-def pagina_principal(request):
-    # Lógica para la vista de la página principal
+def vista_principal(request):
     return render(request, 'pagina_principal.html')
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="Usuario")
-    password = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
+    usuario = forms.CharField(label="Usuario")
+    clave = forms.CharField(label="Clave", widget=forms.PasswordInput)
