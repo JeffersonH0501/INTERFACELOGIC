@@ -25,6 +25,8 @@ def vista_login(request):
 
                     respuesta = response.json().get('respuesta')
 
+                    print(respuesta)
+                    
                     if respuesta == "valido":
                         return redirect('principal')
                     
