@@ -31,7 +31,7 @@ def vista_login(request):
             if response == "VALIDO":
                 return redirect('principal')
             elif response == "INVALIDO":
-                error_message = "Credenciales de inicio de sesión incorrectas. Por favor, inténtelo de nuevo."
+                error_message = "Usuario/Clave incorrecto"
                 context = {'form': form, 'error_message': error_message}
                 return render(request, 'pagina_login.html', context)
                 
