@@ -8,10 +8,8 @@ def vista_login(request):
 
     if request.method == 'POST':
 
-        print(request)
         form = LoginForm(request.POST)
 
-        print(form)
         if form.is_valid():
 
             usuario = form.cleaned_data['usuario']
