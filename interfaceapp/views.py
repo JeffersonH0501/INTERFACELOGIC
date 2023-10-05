@@ -32,7 +32,7 @@ def login_view(request):
     else:
         form = LoginForm()
         
-    return render(request, 'index.html', {'form': form})
+    return render(request, 'index.html')
 
 def pagina_principal(request):
     # Lógica para la vista de la página principal
