@@ -8,10 +8,12 @@ def vista_login(request):
 
     if request.method == 'POST':
 
+        print(request)
         form = LoginForm(request.POST)
 
+        print(form)
         if form.is_valid():
-            
+
             usuario = form.cleaned_data['usuario']
             clave = form.cleaned_data['clave']
 
@@ -28,7 +30,14 @@ def vista_login(request):
 
             if response == "VALIDO":
                 return redirect('principal')
-        
+            elif response == "INVALIDO":
+                error_message = "Credenciales de inicio de sesión incorrectas. Por favor, inténtelo de nuevo."
+                context = {'form': form, 'error_message': error_message}
+                return render(request, 'pagina_login.html', context)
+                
+    else:
+        form = LoginForm()
+
     return render(request, 'pagina_login.html')
 
 def vista_principal(request):
