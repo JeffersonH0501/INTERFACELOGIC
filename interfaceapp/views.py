@@ -19,7 +19,7 @@ def vista_login(request):
 
             print("> documento: " + documento + ", clave: " + clave)
 
-            url_autenticacion = 'http://34.36.86.244:80/api/autenticacion/' #URL del balanceador
+            url_autenticacion = 'http://34.36.86.244:80/autenticacion/' #URL del balanceador
 
             try:
                 respuestaHttp = requests.post(url_autenticacion, json=informacion_usuario)
@@ -39,7 +39,7 @@ def vista_login(request):
                         elif tipo == 'paciente':
                             nueva_url = reverse('principal_paciente', args=[documento])
 
-                        elif tipo == 'administrador':
+                        elif tipo == 'director':
                             nueva_url = reverse('principal_director', args=[documento])
 
                         return redirect(nueva_url)
