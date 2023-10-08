@@ -27,7 +27,7 @@ def vista_login(request):
                 if respuestaHttp.status_code == 200:
 
                     respuesta = respuestaHttp.json().get('respuesta')
-                    tipo = respuesta.json().get('tipo')
+                    tipo = respuestaHttp.json().get('tipo')
 
                     print(respuesta, tipo)
                     
