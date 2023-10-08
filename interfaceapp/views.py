@@ -1,6 +1,9 @@
 import requests
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django import forms
+
+# FUNCIONES DE LAS DIFERENTES VISTAS DE LA APLIACIÓN
 
 def vista_login(request):
 
@@ -10,28 +13,39 @@ def vista_login(request):
 
         if form.is_valid():
 
-            usuario = form.cleaned_data['usuario']
+            documento = form.cleaned_data['documento']
             clave = form.cleaned_data['clave']
-            informacion_usuario = {'usuario': usuario, 'clave': clave}
+            informacion_usuario = {'documento': documento, 'clave': clave}
 
-            print("> usuario: " + usuario + ", clave: " + clave)
+            print("> documento: " + documento + ", clave: " + clave)
 
             url_autenticacion = 'http://34.36.86.244:80/api/autenticacion/' #URL del balanceador
 
             try:
-                response = requests.post(url_autenticacion, json=informacion_usuario)
+                respuestaHttp = requests.post(url_autenticacion, json=informacion_usuario)
 
-                if response.status_code == 200:
+                if respuestaHttp.status_code == 200:
 
-                    respuesta = response.json().get('respuesta')
+                    respuesta = respuestaHttp.json().get('respuesta')
+                    tipo = respuesta.json().get('tipo')
 
-                    print(respuesta)
+                    print(respuesta, tipo)
                     
                     if respuesta == "valido":
-                        return redirect('principal')
-                    
+
+                        if tipo == 'profesionalSalud':
+                            nueva_url = reverse('principal_profesionalSalud', args=[documento])
+
+                        elif tipo == 'paciente':
+                            nueva_url = reverse('principal_paciente', args=[documento])
+
+                        elif tipo == 'administrador':
+                            nueva_url = reverse('principal_director', args=[documento])
+
+                        return redirect(nueva_url)
+
                     elif respuesta == "invalido":
-                        mensaje_error = "Usuario/Clave incorrecto"
+                        mensaje_error = "Documento/Clave incorrecto"
                         contexto = {'form': form, 'error_message': mensaje_error}
                         return render(request, 'pagina_login.html', contexto)
                     
@@ -44,12 +58,22 @@ def vista_login(request):
                 mensaje_error = "Error de conexión con el servidor de autenticación"
                 contexto = {'form': form, 'error_message': mensaje_error}
                 return render(request, 'pagina_login.html', contexto)
+            
+    else:
+        return render(request, 'pagina_login.html')
 
-    return render(request, 'pagina_login.html')
+def vista_principal_profesionalSalud(request, documento):
+    return render(request, 'pagina_principal_profesionalSalud.html', {'documento': documento})
 
-def vista_principal(request):
-    return render(request, 'pagina_principal.html')
+def vista_principal_paciente(request, documento):
+    return render(request, 'pagina_principal_paciente.html', {'documento': documento})
+
+def vista_principal_director(request, documento):
+    return render(request, 'pagina_principal_director.html', {'documento': documento})
+
+
+# DEFINICIÓN DE CLASES AUXILIARES
 
 class LoginForm(forms.Form):
-    usuario = forms.CharField(label="Usuario")
+    documento = forms.CharField(label="Documento")
     clave = forms.CharField(label="Clave", widget=forms.PasswordInput)
