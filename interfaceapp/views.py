@@ -63,7 +63,42 @@ def vista_login(request):
         return render(request, 'pagina_login.html')
 
 def vista_principal_profesionalSalud(request, documento):
-    return render(request, 'pagina_principal_profesionalSalud.html', {'documento': documento})
+
+    url_usuario = 'http://XX.XX.XX.XXX:XXXX/usuario/' #URL del servidor de usuarios
+
+    try:
+
+        respuestaHttp = requests.post(url_usuario, json={'documento': documento})
+
+        if respuestaHttp.status_code == 200:
+
+            usuarioJson = respuestaHttp.json()
+
+            usuario = {
+                'documento': usuarioJson.get('documento'),
+                'clave': usuarioJson.get('clave'),
+                'tipo': usuarioJson.get('tipo'),
+                'nombre': usuarioJson.get('nombre'),
+                'edad': usuarioJson.get('edad'),
+                'telefono': usuarioJson.get('telefono'),
+                'sexo': usuarioJson.get('sexo'),
+                'correo': usuarioJson.get('correo')
+            }
+
+            if usuario['tipo'] == 'profesionalSalud':
+                return render(request, 'pagina_principal_profesionalSalud.html', usuario)
+
+            else:
+                mensaje_error = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
+                return render(request, 'pagina_error.html', {'error_message': mensaje_error})
+
+        else:
+            mensaje_error = f"Error al cargar la página del profesional de salud: {respuestaHttp.status_code}"
+            return render(request, 'pagina_error.html', {'error_message': mensaje_error})
+
+    except requests.exceptions.RequestException as e:
+        mensaje_error = "Error al cargar la pagina del profesional de salud"
+        return render(request, 'pagina_error.html', {'error_message': mensaje_error})
 
 def vista_principal_paciente(request, documento):
     return render(request, 'pagina_principal_paciente.html', {'documento': documento})
