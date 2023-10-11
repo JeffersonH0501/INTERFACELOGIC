@@ -1,21 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<style>
-  /* Estilo para el título */
-  h1 {
-    font-size: 36px;
-    color: #007bff; /* Color azul */
-    text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto */
-    margin-top: 50px; /* Margen superior */
-    font-family: 'Arial', sans-serif; /* Fuente */
-  }
-</style>
+
+  <title>RASIMEDICAL</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'recursos_error/main.css' %}">
+
 </head>
+
 <body>
 
-<h1>RASI MEDICAL PAGINA ERROR</h1>
+  <section class="error-container">
+    <span>E</span>
+    <span>R</span>
+    <span>R</span>
+    <span>O</span>
+    <span>R</span>
+  </section>
+  <div class="error-message">
+    <p>{{ error_message }}</p>
+  </div>
 
 </body>
+
 </html>
