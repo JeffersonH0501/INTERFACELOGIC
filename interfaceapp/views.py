@@ -64,7 +64,7 @@ def vista_login(request):
 
 def vista_principal_profesionalSalud(request, documento):
 
-    url_usuario = 'http://XX.XX.XX.XXX:XXXX/usuario/' #URL del servidor de usuarios
+    url_usuario = 'http://10.128.0.6:8080/usuario/' #URL del servidor de usuarios
 
     try:
 
@@ -78,6 +78,7 @@ def vista_principal_profesionalSalud(request, documento):
                 'documento': usuarioJson.get('documento'),
                 'clave': usuarioJson.get('clave'),
                 'tipo': usuarioJson.get('tipo'),
+                'foto': usuarioJson.get('foto'),
                 'nombre': usuarioJson.get('nombre'),
                 'edad': usuarioJson.get('edad'),
                 'telefono': usuarioJson.get('telefono'),
