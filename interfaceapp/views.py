@@ -3,13 +3,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 
-# FUNCIONES DE LAS DIFERENTES VISTAS DE LA APLIACIÓN
-
 def vista_login(request):
 
     if request.method == 'POST':
 
         form = LoginForm(request.POST)
+        mensaje_error = ""
 
         if form.is_valid():
 
@@ -22,6 +21,7 @@ def vista_login(request):
             url_autenticacion = 'http://34.36.86.244:80/autenticacion/' #URL del balanceador
 
             try:
+
                 respuestaHttp = requests.post(url_autenticacion, json=informacion_usuario)
 
                 if respuestaHttp.status_code == 200:
@@ -34,7 +34,8 @@ def vista_login(request):
                     if respuesta == "valido":
 
                         if tipo == 'profesionalSalud':
-                            nueva_url = reverse('principal_profesionalSalud', args=[documento])
+                            request.session['documento'] = documento
+                            nueva_url = reverse('vista_agregar_adenda')
 
                         elif tipo == 'paciente':
                             nueva_url = reverse('principal_paciente', args=[documento])
@@ -46,24 +47,24 @@ def vista_login(request):
 
                     elif respuesta == "invalido":
                         mensaje_error = "Documento/Clave incorrecto"
-                        contexto = {'form': form, 'error_message': mensaje_error}
-                        return render(request, 'pagina_login.html', contexto)
                     
                 else:
                     mensaje_error = "Error en la solicitud al servidor de autenticación"
-                    contexto = {'form': form, 'error_message': mensaje_error}
-                    return render(request, 'pagina_login.html', contexto)
                 
             except requests.exceptions.RequestException as e:
+
                 mensaje_error = "Error de conexión con el servidor de autenticación"
-                contexto = {'form': form, 'error_message': mensaje_error}
-                return render(request, 'pagina_login.html', contexto)
+            
+        return render(request, 'pagina_login.html', {'error_message': mensaje_error} )
             
     else:
         return render(request, 'pagina_login.html')
+    
 
-def vista_principal_profesionalSalud(request, documento):
 
+def vista_agregar_adenda(request):
+
+    documento = request.session.get('documento')
     url_usuario = 'http://10.128.0.6:8080/usuario/' #URL del servidor de usuarios
 
     try:
@@ -89,41 +90,40 @@ def vista_principal_profesionalSalud(request, documento):
 
                 request.session['foto'] = usuario['foto']
                 request.session['nombre'] = usuario['nombre']
-                request.session['documento'] = usuario['documento']
                 request.session['edad'] = usuario['edad']
                 request.session['telefono'] = usuario['telefono']
                 request.session['sexo'] = usuario['sexo']
 
-                return render(request, 'pagina_principal_profesionalSalud.html', usuario)
+                return render(request, 'pagina_agregar_adenda,html', usuario)
 
             else:
-                
-                mensaje_error = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
-                request.session['mensaje_error'] = mensaje_error
-                nueva_url = reverse('pagina_error')
-                return redirect(nueva_url)
+                request.session['mensaje_error'] = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
 
         else:
-            mensaje_error = f"Error al cargar la página del profesional de salud: {respuestaHttp.status_code}"
-            request.session['mensaje_error'] = mensaje_error
-            nueva_url = reverse('pagina_error')
-            return redirect(nueva_url)
+            request.session['mensaje_error'] = f"Error ({respuestaHttp.status_code}) al cargar la página del profesional de salud"
 
     except requests.exceptions.RequestException as e:
-        mensaje_error = "Error al cargar la pagina del profesional de salud"
-        request.session['mensaje_error'] = mensaje_error
-        nueva_url = reverse('pagina_error')
-        return redirect(nueva_url)
+        request.session['mensaje_error'] = "Error al cargar la pagina del profesional de salud"
+    
+    return redirect(reverse('pagina_error'))
+    
+
 
 def vista_principal_paciente(request, documento):
     return render(request, 'pagina_principal_paciente.html', {'documento': documento})
 
+
+
 def vista_principal_director(request, documento):
     return render(request, 'pagina_principal_director.html', {'documento': documento})
+
+
 
 def vista_error(request):
     mensaje_error = request.session.get('mensaje_error')
     return render(request, 'pagina_error.html', {'error_message': mensaje_error})
+
+
 
 def agregar_adenda(request):
 
@@ -179,12 +179,10 @@ def agregar_adenda(request):
         return render(request, 'pagina_principal_profesionalSalud.html', contexto)
     
     else:
-        mensaje_error = "Error al agregar la agenda. La peticion no es POST"
-        nueva_url = reverse('pagina_error', args=[mensaje_error])
-        return redirect(nueva_url)
+        request.session['mensaje_error'] = "Error al agregar la agenda. La peticion no es POST" 
+        return redirect(reverse('pagina_error'))
 
 
-# DEFINICIÓN DE CLASES AUXILIARES
 
 class LoginForm(forms.Form):
     documento = forms.CharField(label="Documento")
