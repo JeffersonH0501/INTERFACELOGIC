@@ -83,7 +83,6 @@ def vista_principal_profesionalSalud(request, documento):
                 'edad': usuarioJson.get('edad'),
                 'telefono': usuarioJson.get('telefono'),
                 'sexo': usuarioJson.get('sexo'),
-                'correo': usuarioJson.get('correo')
             }
 
             if usuario['tipo'] == 'profesionalSalud':
@@ -91,15 +90,17 @@ def vista_principal_profesionalSalud(request, documento):
 
             else:
                 mensaje_error = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
-                return render(request, 'pagina_error.html', {'error_message': mensaje_error})
-
+                nueva_url = reverse('pagina_error', args=[mensaje_error])
+                return redirect(nueva_url)
         else:
             mensaje_error = f"Error al cargar la página del profesional de salud: {respuestaHttp.status_code}"
-            return render(request, 'pagina_error.html', {'error_message': mensaje_error})
+            nueva_url = reverse('pagina_error', args=[mensaje_error])
+            return redirect(nueva_url)
 
     except requests.exceptions.RequestException as e:
         mensaje_error = "Error al cargar la pagina del profesional de salud"
-        return render(request, 'pagina_error.html', {'error_message': mensaje_error})
+        nueva_url = reverse('pagina_error', args=[mensaje_error])
+        return redirect(nueva_url)
 
 def vista_principal_paciente(request, documento):
     return render(request, 'pagina_principal_paciente.html', {'documento': documento})
@@ -107,6 +108,8 @@ def vista_principal_paciente(request, documento):
 def vista_principal_director(request, documento):
     return render(request, 'pagina_principal_director.html', {'documento': documento})
 
+def vista_error(request, mensaje):
+    return render(request, 'pagina_error.html', {'error_message': mensaje})
 
 # DEFINICIÓN DE CLASES AUXILIARES
 
