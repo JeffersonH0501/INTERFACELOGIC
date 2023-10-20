@@ -231,7 +231,7 @@ def vista_principal_director(request, documento):
                 'sexo': usuarioJson.get('sexo'),
             }
 
-            if usuario['tipo'] == 'paciente':
+            if usuario['tipo'] == 'director':
                 return render(request, 'pagina_principal_director.html', usuario)
 
             else:
