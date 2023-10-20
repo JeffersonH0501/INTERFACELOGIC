@@ -54,7 +54,7 @@ def agregar_adenda(request):
         except requests.exceptions.RequestException as e:
             contexto['mensaje'] = "Error de conexión con el servidor de usuarios"
 
-    return render(request, 'pagina_agregar_adenda.html', contexto)
+    return contexto
     
 
 
@@ -120,7 +120,8 @@ def vista_login(request):
 def vista_agregar_adenda(request):
 
     if request.method == 'POST':
-        agregar_adenda(request)
+        contexto = agregar_adenda(request)
+        return render(request, 'pagina_agregar_adenda.html', contexto)
 
     else:
 
