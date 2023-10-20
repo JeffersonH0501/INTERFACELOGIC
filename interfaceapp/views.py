@@ -54,7 +54,7 @@ def agregar_adenda(request):
         except requests.exceptions.RequestException as e:
             contexto['mensaje'] = "Error de conexión con el servidor de usuarios"
 
-    return render(request, 'pagina_agregar_adenda', contexto)
+    return render(request, 'pagina_agregar_adenda.html', contexto)
     
 
 
