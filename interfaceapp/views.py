@@ -99,17 +99,20 @@ def vista_principal_profesionalSalud(request, documento):
             else:
                 
                 mensaje_error = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
-                nueva_url = reverse('pagina_error', args=[mensaje_error])
+                request.session['mensaje_error'] = mensaje_error
+                nueva_url = reverse('pagina_error')
                 return redirect(nueva_url)
 
         else:
             mensaje_error = f"Error al cargar la página del profesional de salud: {respuestaHttp.status_code}"
-            nueva_url = reverse('pagina_error', args=[mensaje_error])
+            request.session['mensaje_error'] = mensaje_error
+            nueva_url = reverse('pagina_error')
             return redirect(nueva_url)
 
     except requests.exceptions.RequestException as e:
         mensaje_error = "Error al cargar la pagina del profesional de salud"
-        nueva_url = reverse('pagina_error', args=[mensaje_error])
+        request.session['mensaje_error'] = mensaje_error
+        nueva_url = reverse('pagina_error')
         return redirect(nueva_url)
 
 def vista_principal_paciente(request, documento):
@@ -118,7 +121,8 @@ def vista_principal_paciente(request, documento):
 def vista_principal_director(request, documento):
     return render(request, 'pagina_principal_director.html', {'documento': documento})
 
-def vista_error(request, mensaje_error):
+def vista_error(request):
+    mensaje_error = request.session.get('mensaje_error')
     return render(request, 'pagina_error.html', {'error_message': mensaje_error})
 
 def agregar_adenda(request):

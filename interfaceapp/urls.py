@@ -7,6 +7,6 @@ urlpatterns = [
     path('principal_paciente/<str:documento>/', views.vista_principal_paciente, name='principal_paciente'),
     path('principal_director/<str:documento>/', views.vista_principal_director, name='principal_director'),
     path('agregar_adenda/', views.agregar_adenda, name='agregar_adenda'),
-    path('pagina_error/<str:mensaje_error>/', views.vista_error, name='pagina_error')
+    path('pagina_error/', views.vista_error, name='pagina_error')
 ]
 
