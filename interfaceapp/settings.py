@@ -8,6 +8,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

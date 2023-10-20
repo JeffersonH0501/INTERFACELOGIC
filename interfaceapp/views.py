@@ -146,7 +146,7 @@ def agregar_adenda(request):
 
             informacion_adenda = {'documento_paciente': documento_paciente, 'documento_profesional': documento_profesional, 'fecha': fecha, 'tipo': tipo, 'descripcion': descripcion}
 
-            print("> documento: " + documento_paciente + ", documento_profesional: " + documento_profesional + ", feacha: " + fecha + ", tipo: " + tipo)
+            print("> documento: " + documento_paciente + ", documento_profesional: " + documento_profesional + ", fecha: " + fecha + ", tipo: " + tipo)
 
             url_agregar_adenda = 'http://10.128.0.6:8080/agregarAdenda/' #URL del servidor de usuarios
 
@@ -160,11 +160,11 @@ def agregar_adenda(request):
 
                     if adenda == None:
                         print("Adenda No fue agrega con exito al paciente con documento:", documento_paciente)
-                        contexto['mensaje'] = "Adenda agrega con exito"
-                    else:
-                        print("Adenda No fue agrega con exito al paciente con documento:", documento_paciente)
-                        print("Información de la Adenda:", adenda)
                         contexto['mensaje'] = "El paciente no existe/El paciente no le pertenece"
+                    else:
+                        print("Adenda fue agregada con exito al paciente con documento:", documento_paciente)
+                        print("Información de la Adenda:", adenda)
+                        contexto['mensaje'] = "Adenda agregada con exito"
 
                 else:
                     contexto['mensaje'] = "Error en la solicitud al servidor de usuarios"
