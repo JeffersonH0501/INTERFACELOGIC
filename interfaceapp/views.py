@@ -90,15 +90,15 @@ def vista_principal_profesionalSalud(request, documento):
 
             else:
                 mensaje_error = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
-                return redirect('pagina_error', mensaje_error=mensaje_error)
+                return redirect('pagina_error', error_message=mensaje_error)
             
         else:
             mensaje_error = f"Error al cargar la página del profesional de salud: {respuestaHttp.status_code}"
-            return redirect('pagina_error', mensaje_error=mensaje_error)
+            return redirect('pagina_error', error_message=mensaje_error)
 
     except requests.exceptions.RequestException as e:
         mensaje_error = "Error al cargar la pagina del profesional de salud"
-        return redirect('pagina_error', mensaje_error=mensaje_error)
+        return redirect('pagina_error', error_message=mensaje_error)
 
 def vista_principal_paciente(request, documento):
     return render(request, 'pagina_principal_paciente.html', {'documento': documento})
