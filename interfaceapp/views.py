@@ -106,7 +106,8 @@ def vista_principal_paciente(request, documento):
 def vista_principal_director(request, documento):
     return render(request, 'pagina_principal_director.html', {'documento': documento})
 
-def vista_error(request, mensaje):
+def vista_error(request):
+    mensaje = request.GET.get('error_message', None)
     return render(request, 'pagina_error.html', {'error_message': mensaje})
 
 # DEFINICIÓN DE CLASES AUXILIARES
