@@ -86,6 +86,14 @@ def vista_principal_profesionalSalud(request, documento):
             }
 
             if usuario['tipo'] == 'profesionalSalud':
+
+                request.session['foto'] = usuario['foto']
+                request.session['nombre'] = usuario['nombre']
+                request.session['documento'] = usuario['documento']
+                request.session['edad'] = usuario['edad']
+                request.session['telefono'] = usuario['telefono']
+                request.session['sexo'] = usuario['sexo']
+
                 return render(request, 'pagina_principal_profesionalSalud.html', usuario)
 
             else:
@@ -119,13 +127,13 @@ def agregar_adenda(request):
    
     if request.method == 'POST':
 
-        contexto['foto'] = request.POST.get('foto')
-        contexto['nombre'] = request.POST.get('nombre')
-        documento_profesional = request.POST.get('documento')
+        contexto['foto'] = request.session.get('foto')
+        contexto['nombre'] = request.session.get('nombre')
+        documento_profesional = request.session.get('documento')
         contexto['documento'] = documento_profesional
-        contexto['edad'] = request.POST.get('edad')
-        contexto['telefono'] = request.POST.get('telefono')
-        contexto['sexo'] = request.POST.get('sexo')
+        contexto['edad'] = request.session.get('edad')
+        contexto['telefono'] = request.session.get('telefono')
+        contexto['sexo'] = request.session.get('sexo')
 
         form = AdendaForm(request.POST)
 
