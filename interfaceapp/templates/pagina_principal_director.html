@@ -1,21 +1,232 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html style="font-size: 16px;" lang="es">
+
 <head>
-<style>
-  /* Estilo para el título */
-  h1 {
-    font-size: 36px;
-    color: #007bff; /* Color azul */
-    text-align: center;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto */
-    margin-top: 50px; /* Margen superior */
-    font-family: 'Arial', sans-serif; /* Fuente */
-  }
-</style>
+  <title>RASIMEDICAL</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+	<link rel="icon" type="image/png" href="{% static 'recursos_principal/icono2.ico' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'recursos_principal/bootstrap.min.css' %}">
+
+  <style>
+    
+    @font-face {
+      font-family: Poppins-Bold;
+      
+      src: url("{% static 'recursos_principal/fonts/Poppins-Bold.ttf' %}"); 
+    }
+
+    @font-face {
+      font-family: Poppins-Medium;
+      src: url("{% static 'recursos_principal/fonts/Poppins-Medium.ttf' %}"); 
+    }
+
+    @font-face {
+      font-family: Poppins-Regular;
+      src: url("{% static 'recursos_principal/fonts/Poppins-Regular.ttf' %}"); 
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background-color: #0A8EC3;
+    }
+
+    header img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    section {
+      display: flex;
+      width: 100%;
+    }
+
+    .primer_contenedor {
+      flex: 3;
+      background-color: #59738D;
+      padding: 50px;
+      text-align: center;
+    }
+
+    .foto_profesional img {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nombre_profesional {
+      margin: 26px;
+    }
+
+    .nombre_profesional h3 {
+      font-family: Poppins-Bold;
+      color: rgb(245, 245, 245);
+    }
+
+    .datos_profesional {
+      text-align: left;
+      padding-left: 40px;
+    }
+    
+    .datos_profesional div span:first-child {
+      color: rgb(204, 204, 204);
+      font-weight: bold;
+      font-family: Poppins-Medium;
+    }
+
+    .datos_profesional div span:nth-child(2) {
+      color: rgb(245, 245, 245);
+      font-family: Poppins-Medium;
+    }
+
+    .segundo_contenedor {
+      flex: 7;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .titulo_paciente {
+      margin-bottom: 20px;
+    }
+
+    .titulo_paciente span {
+      font-family: Poppins-Bold;
+      color: #333333;
+      font-size: 27px;
+    }
+
+    .input {
+      font-family: Poppins-Medium;
+      font-size: 15px;
+      color: #666666;
+      width: 80%;
+      background: #e6e6e6;
+      height: 50px;
+      border-radius: 25px;
+      padding: 0 30px 0 30px;
+      margin: 5px;
+      outline: none;
+	    border: none;
+    }
+
+    .input_descripcion {
+      font-family: Poppins-Medium;
+      font-size: 15px;
+      color: #666666;
+      width: 80%;
+      background: #e6e6e6;
+      height: 130px;
+      border-radius: 25px;
+      padding: 15px 30px;
+      margin-top: 5px;
+      margin-bottom: 34px;
+      outline: none;
+	    border: none;
+    }
+
+    textarea:focus, input:focus {
+      border-color: transparent !important;
+    }
+
+    .div_mensaje {
+      color: red;
+      font-family: Poppins-Medium;
+      margin-bottom: 5px;
+    }
+
+    .boton {
+      font-family: Poppins-Medium;
+      color: rgb(245, 245, 245);
+      width: 20%;
+      height: 50px;
+      border-radius: 25px;
+      background: #0a8ec3;
+      outline: none !important;
+      border: none;
+    }
+
+    .boton:hover {
+      background: #5e9fd5;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: black;
+      color: rgb(186, 186, 186);
+      text-align: center;
+      width: 100%;
+      padding-top: 24px;
+      padding-bottom: 16px;
+    }
+
+    h6 {
+	    height: 100%;
+	    font-family: Poppins-Regular;
+    }
+
+  </style>
 </head>
+
 <body>
 
-<h1>RASI MEDICAL DIRECTOR HOME PAGE</h1>
+  <header>
+    <img src="{% static 'recursos_principal/logo_rasi.png' %}" atl="rasimedical">
+  </header>
 
+  <section>
+
+    <div class="primer_contenedor">
+
+      <div class="foto_profesional">
+        <img src="{{ foto }}" alt="usuario">
+      </div>
+
+      <div class="nombre_profesional">
+        <h3>Dr. {{ nombre }}</h3>
+      </div>
+
+      <div class="datos_profesional">
+
+        <div>
+          <span>Documento:</span>
+          <span>{{ documento }}</span>
+        </div>
+        <div>
+          <span>Edad:</span>
+          <span>{{ edad }}</span>
+        </div>
+        <div>
+          <span>Teléfono:</span>
+          <span>{{ telefono }}</span>
+        </div>
+        <div>
+          <span>Sexo:</span>
+          <span>{{ sexo }}</span>
+        </div>
+
+      </div>
+
+    </div>  
+
+    <div class="segundo_contenedor">
+
+      <div class="titulo_paciente">
+        <span>Eres Un Usuario Director</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+      <h6>Arquitectura y Diseño de Software</h6>
+      <h6>MEDICOPS</h6>
+  </footer>
+    
 </body>
 </html>
