@@ -91,7 +91,6 @@ def vista_principal_profesionalSalud(request, documento):
             else:
                 
                 mensaje_error = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
-                # Convertir el valor de mensaje_error a un objeto HttpResponseRedirect
                 nueva_url = reverse('pagina_error', args=[mensaje_error])
                 return redirect(nueva_url)
 
@@ -114,8 +113,73 @@ def vista_principal_director(request, documento):
 def vista_error(request, mensaje_error):
     return render(request, 'pagina_error.html', {'error_message': mensaje_error})
 
+def agregar_adenda(request):
+
+    contexto = {}
+   
+    if request.method == 'POST':
+
+        contexto['foto'] = request.POST.get('foto')
+        contexto['nombre'] = request.POST.get('nombre')
+        documento_profesional = request.POST.get('documento')
+        contexto['documento'] = documento_profesional
+        contexto['edad'] = request.POST.get('edad')
+        contexto['telefono'] = request.POST.get('telefono')
+        contexto['sexo'] = request.POST.get('sexo')
+
+        form = AdendaForm(request.POST)
+
+        if form.is_valid():
+
+            documento_paciente = form.cleaned_data['documento_paciente']
+            fecha = form.cleaned_data['fecha']
+            tipo = form.cleaned_data['tipo']
+            descripcion = form.cleaned_data['descripcion']
+
+            informacion_adenda = {'documento_paciente': documento_paciente, 'documento_profesional': documento_profesional, 'fecha': fecha, 'tipo': tipo, 'descripcion': descripcion}
+
+            print("> documento: " + documento_paciente + ", documento_profesional: " + documento_profesional + ", feacha: " + fecha + ", tipo: " + tipo)
+
+            url_agregar_adenda = 'http://10.128.0.6:8080/agregarAdenda/' #URL del servidor de usuarios
+
+            try:
+
+                respuestaHttp = requests.post(url_agregar_adenda, json=informacion_adenda)
+
+                if respuestaHttp.status_code == 200:
+
+                    adenda = respuestaHttp.json().get('adenda')
+
+                    if adenda == None:
+                        print("Adenda No fue agrega con exito al paciente con documento:", documento_paciente)
+                        contexto['mensaje'] = "Adenda agrega con exito"
+                    else:
+                        print("Adenda No fue agrega con exito al paciente con documento:", documento_paciente)
+                        print("Información de la Adenda:", adenda)
+                        contexto['mensaje'] = "El paciente no existe/El paciente no le pertenece"
+
+                else:
+                    contexto['mensaje'] = "Error en la solicitud al servidor de usuarios"
+                
+            except requests.exceptions.RequestException as e:
+                contexto['mensaje'] = "Error de conexión con el servidor de usuarios"
+
+        return render(request, 'pagina_principal_profesionalSalud.html', contexto)
+    
+    else:
+        mensaje_error = "Error al agregar la agenda. La peticion no es POST"
+        nueva_url = reverse('pagina_error', args=[mensaje_error])
+        return redirect(nueva_url)
+
+
 # DEFINICIÓN DE CLASES AUXILIARES
 
 class LoginForm(forms.Form):
     documento = forms.CharField(label="Documento")
     clave = forms.CharField(label="Clave", widget=forms.PasswordInput)
+
+class AdendaForm(forms.Form):
+    documento_paciente = forms.CharField(label="Documento Paciente")
+    fecha = forms.CharField(label="Fecha")
+    tipo = forms.CharField(label="Tipo")
+    descripcion = forms.CharField(label="Descripción")
