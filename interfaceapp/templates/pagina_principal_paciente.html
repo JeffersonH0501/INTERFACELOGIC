@@ -205,7 +205,7 @@
 
   <script>
     function consultarHistoriaClinica(documento) {
-      window.location.href = "{% url 'historia_clinica' %}" + documento;
+      window.location.href = "{% url 'historia_clinica' documento=documento %}";
     }
   </script>
     
