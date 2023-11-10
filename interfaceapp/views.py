@@ -247,7 +247,7 @@ def vista_principal_director(request, documento):
         
     return redirect(reverse('pagina_error'))
 
-def vista_historiaClinica_paciente(request, documento):
+def vista_historiaClinica_paciente(request):
 
     usuario = request.session.get('paciente')
 
