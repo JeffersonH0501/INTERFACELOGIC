@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="es">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    
+    <title>RASIMEDICAL</title>
+
+	  <link rel="icon" type="image/png" href="recursos_pagina_profesional/icono2.ico"/>
+    <link rel="stylesheet" type="text/css" href="recursos_pagina_profesional/bootstrap.min.css">
+
+  <style>
+    
+    @font-face {
+      font-family: Poppins-Bold;
+      src: url('./recursos_pagina_profesional/fonts/Poppins-Bold.ttf'); 
+    }
+
+    @font-face {
+      font-family: Poppins-Medium;
+      src: url('./recursos_pagina_profesional/fonts/Poppins-Medium.ttf'); 
+    }
+
+    @font-face {
+      font-family: Poppins-Regular;
+      src: url('./recursos_pagina_profesional/fonts/Poppins-Regular.ttf'); 
+    }
+
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background-color: #0A8EC3;
+    }
+
+    header img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    section {
+      display: flex;
+      width: 100%;
+    }
+
+    .primer_contenedor {
+      flex: 3;
+      background-color: #59738D;
+      padding: 50px;
+      text-align: center;
+    }
+
+    .foto_profesional img {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nombre_profesional {
+      margin: 26px;
+    }
+
+    .nombre_profesional h3 {
+      font-family: Poppins-Bold;
+      color: rgb(245, 245, 245);
+    }
+
+    .datos_profesional {
+      text-align: left;
+      padding-left: 40px;
+    }
+    
+    .datos_profesional div span:first-child {
+      color: rgb(204, 204, 204);
+      font-weight: bold;
+      font-family: Poppins-Medium;
+    }
+
+    .datos_profesional div span:nth-child(2) {
+      color: rgb(245, 245, 245);
+      font-family: Poppins-Medium;
+    }
+
+    .segundo_contenedor {
+      flex: 7;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .titulo_paciente {
+      margin-bottom: 20px;
+    }
+
+    .titulo_paciente span {
+      font-family: Poppins-Bold;
+      color: #333333;
+      font-size: 27px;
+    }
+
+    .informacion {
+      margin-bottom: 20px;
+      text-align: left;
+      padding-left: 30px;
+      padding-right: 28px;
+    }
+
+    .informacion span {
+      font-family: Poppins-Medium;
+      color: #333333;
+      font-size: 23px;
+    }
+
+    .informacion h6 {
+      font-family: Poppins-Regular;
+      color: #333333;
+      font-size: 17px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      background: #e6e6e6;
+      padding: 20px;
+      border-radius: 30px;
+    }
+
+    .adendas {
+      border-collapse: collapse;
+      width: 100%;
+      border-radius: 25px;
+      margin-top: 10px;
+    }
+
+    .adendas th, .adendas td {
+      padding: 8px;
+      text-align: center;
+    }
+
+    .adendas th {
+      background-color: #59738D;
+      color:rgb(245, 245, 245);
+    }
+
+    .adendas td {
+      background-color: #f2f2f2;
+      padding: 10px;
+    }
+
+    tr:first-child th:first-child {
+      border-top-left-radius: 25px;
+    }
+    tr:first-child th:last-child {
+      border-top-right-radius: 25px;
+    }
+    tr:last-child td:first-child {
+      border-bottom-left-radius: 25px;
+    }
+    tr:last-child td:last-child {
+      border-bottom-right-radius: 25px;
+    }
+
+    .boton {
+      font-family: Poppins-Medium;
+      color: #333333;
+      width: 40%;
+      height: 50px;
+      border-radius: 25px;
+      background: rgb(245, 245, 245);
+      outline: none !important;
+      border: none;
+      margin-top: 30px;
+    }
+
+    .boton:hover {
+      background: #e6e6e6;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: black;
+      color: rgb(186, 186, 186);
+      text-align: center;
+      width: 100%;
+      padding-top: 24px;
+      padding-bottom: 15.5px;
+    }
+
+    h6 {
+	    height: 100%;
+	    font-family: Poppins-Regular;
+    }
+
+  </style>
+</head>
+
+<body>
+  
+  <header>
+    <img src="./recursos_pagina_profesional/logo_rasi.png" atl="rasimedical">
+  </header>
+
+  <section>
+
+    <div class="primer_contenedor">
+
+      <div class="foto_profesional">
+        <img src="{{ foto }}" alt="usuario">
+      </div>
+
+      <div class="nombre_profesional">
+        <h3>{{ nombre }}</h3>
+      </div>
+
+      <div class="datos_profesional">
+
+        <div>
+          <span>Documento:</span>
+          <span>{{ documento }}</span>
+        </div>
+        <div>
+          <span>Edad:</span>
+          <span>{{ edad }}</span>
+        </div>
+        <div>
+          <span>Teléfono:</span>
+          <span>{{ telefono }}/span>
+        </div>
+        <div>
+          <span>Sexo:</span>
+          <span>{{ sexo }}</span>
+        </div>
+
+      </div>
+
+      <button class="boton" type="submit">
+        Regresar
+      </button>
+
+    </div>  
+
+    <div class="segundo_contenedor">
+
+      <div class="titulo_paciente">
+        <span>Historia Clínica</span>
+      </div>
+
+      <div class="informacion">
+        <span>Diagnosticos</span>
+        <h6>{{ usuario.historia_clinica.diagnosticos }}</h6>
+        <span>Tratamiento</span>
+        <h6>{{ usuario.historia_clinica.tratamientos }}</h6>
+        <span>Notas</span>
+        <h6>{{ usuario.historia_clinica.notas }}</h6>
+        <span>Adendas</span>
+        <table class="adendas">
+          <tr>
+            <th style="width: 20%;">Fecha</th>
+            <th style="width: 20%;">Tipo</th>
+            <th style="width: 60%;">Descripción</th>
+          </tr>
+          {% for adenda in usuario.adendas %}
+          <tr>
+            <td>{{ adenda.Fecha }}</td>
+            <td>{{ adenda.Tipo }}</td>
+            <td>{{ adenda.Descripción }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+      <h6>Arquitectura y Diseño de Software</h6>
+      <h6>MEDICOPS</h6>
+  </footer>
+    
+</body>
+</html>

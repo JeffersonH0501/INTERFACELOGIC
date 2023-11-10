@@ -3,8 +3,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 
-
-
 def agregar_adenda(request):
 
     contexto = {}
@@ -55,8 +53,6 @@ def agregar_adenda(request):
             contexto['mensaje'] = "Error de conexión con el servidor de usuarios"
 
     return contexto
-    
-
 
 def vista_login(request):
 
@@ -115,8 +111,6 @@ def vista_login(request):
     else:
         return render(request, 'pagina_login.html')
     
-
-
 def vista_agregar_adenda(request):
 
     if request.method == 'POST':
@@ -168,11 +162,9 @@ def vista_agregar_adenda(request):
         
         return redirect(reverse('pagina_error'))
     
-
-
 def vista_principal_paciente(request, documento):
 
-    url_usuario = 'http://10.128.0.6:8080/usuario/' #URL del servidor de usuarios
+    url_usuario = 'http://10.128.0.8:8000/usuario/' #URL del servidor de usuarios
 
     try:
 
@@ -191,7 +183,18 @@ def vista_principal_paciente(request, documento):
                 'edad': usuarioJson.get('edad'),
                 'telefono': usuarioJson.get('telefono'),
                 'sexo': usuarioJson.get('sexo'),
+                'historia_clinica': {
+                    'diagnosticos': usuarioJson.get('historia_clinica').get('diagnosticos'),
+                    'tratamientos': usuarioJson.get('historia_clinica').get('tratamientos'),
+                    'notas': usuarioJson.get('historia_clinica').get('notas')
+                },
+                'adendas': []
             }
+
+            for adenda in usuarioJson.get('adendas'):
+                usuario['adendas'].append(adenda)
+
+            request.session['paciente'] = usuario
 
             if usuario['tipo'] == 'paciente':
                 return render(request, 'pagina_principal_paciente.html', usuario)
@@ -206,8 +209,6 @@ def vista_principal_paciente(request, documento):
         request.session['mensaje_error'] = "Error al cargar la pagina del paciente"
         
     return redirect(reverse('pagina_error'))
-
-
 
 def vista_principal_director(request, documento):
 
@@ -246,13 +247,22 @@ def vista_principal_director(request, documento):
         
     return redirect(reverse('pagina_error'))
 
+def vista_historiaClinica_paciente(request, documento):
+
+    usuario = request.session.get('paciente')
+
+    if usuario['tipo'] == 'paciente':
+        return render(request, 'pagina_historia_clinica.html', usuario)
+    
+    else:
+        request.session['mensaje_error'] = f"Error al cargar la pagina ya que el {usuario['documento']}  no corresponde a un paciente"
+    
+    return redirect(reverse('pagina_error'))
 
 
 def vista_error(request):
     mensaje_error = request.session.get('mensaje_error')
     return render(request, 'pagina_error.html', {'error_message': mensaje_error})
-
-
 
 class LoginForm(forms.Form):
     documento = forms.CharField(label="Documento")
