@@ -164,7 +164,7 @@ def vista_agregar_adenda(request):
     
 def vista_principal_paciente(request, documento):
 
-    url_usuario = 'http://10.128.0.8:8000/usuario/' #URL del servidor de usuarios
+    url_usuario = 'http://10.128.0.8:8000/usuario/' #URL de kong
 
     try:
 
