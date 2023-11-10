@@ -194,8 +194,6 @@ def vista_principal_paciente(request, documento):
             for adenda in usuarioJson.get('adendas'):
                 usuario['adendas'].append(adenda)
 
-            print(usuario)
-
             request.session['paciente'] = usuario
 
             if usuario['tipo'] == 'paciente':
@@ -252,6 +250,8 @@ def vista_principal_director(request, documento):
 def vista_historiaClinica_paciente(request):
 
     usuario = request.session.get('paciente')
+
+    print(usuario)
 
     if usuario['tipo'] == 'paciente':
         return render(request, 'pagina_historia_clinica.html', usuario)

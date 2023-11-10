@@ -2,13 +2,12 @@
 <html style="font-size: 16px;" lang="es">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
+  <title>RASIMEDICAL</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>RASIMEDICAL</title>
-
-	  <link rel="icon" type="image/png" href="recursos_pagina_profesional/icono2.ico"/>
-    <link rel="stylesheet" type="text/css" href="recursos_pagina_profesional/bootstrap.min.css">
+  <link rel="icon" type="image/png" href="{% static 'recursos_principal/icono2.ico' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'recursos_principal/bootstrap.min.css' %}">
 
   <style>
     
@@ -245,11 +244,11 @@
 
       <div class="informacion">
         <span>Diagnosticos</span>
-        <h6>{{ usuario.historia_clinica.diagnosticos }}</h6>
+        <h6>{{ historia_clinica.diagnosticos }}</h6>
         <span>Tratamiento</span>
-        <h6>{{ usuario.historia_clinica.tratamientos }}</h6>
+        <h6>{{ historia_clinica.tratamientos }}</h6>
         <span>Notas</span>
-        <h6>{{ usuario.historia_clinica.notas }}</h6>
+        <h6>{{ historia_clinica.notas }}</h6>
         <span>Adendas</span>
         <table class="adendas">
           <tr>
@@ -257,7 +256,7 @@
             <th style="width: 20%;">Tipo</th>
             <th style="width: 60%;">Descripción</th>
           </tr>
-          {% for adenda in usuario.adendas %}
+          {% for adenda in adendas %}
           <tr>
             <td>{{ adenda.Fecha }}</td>
             <td>{{ adenda.Tipo }}</td>
