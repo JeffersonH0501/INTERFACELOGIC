@@ -14,17 +14,18 @@
     
     @font-face {
       font-family: Poppins-Bold;
-      src: url('./recursos_pagina_profesional/fonts/Poppins-Bold.ttf'); 
+      
+      src: url("{% static 'recursos_principal/fonts/Poppins-Bold.ttf' %}"); 
     }
 
     @font-face {
       font-family: Poppins-Medium;
-      src: url('./recursos_pagina_profesional/fonts/Poppins-Medium.ttf'); 
+      src: url("{% static 'recursos_principal/fonts/Poppins-Medium.ttf' %}"); 
     }
 
     @font-face {
       font-family: Poppins-Regular;
-      src: url('./recursos_pagina_profesional/fonts/Poppins-Regular.ttf'); 
+      src: url("{% static 'recursos_principal/fonts/Poppins-Regular.ttf' %}"); 
     }
 
     header {
@@ -195,7 +196,7 @@
 <body>
   
   <header>
-    <img src="./recursos_pagina_profesional/logo_rasi.png" atl="rasimedical">
+    <img src="{% static 'recursos_principal/logo_rasi.png' %}" atl="rasimedical">
   </header>
 
   <section>
