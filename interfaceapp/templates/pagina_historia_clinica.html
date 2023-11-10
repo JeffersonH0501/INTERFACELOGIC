@@ -232,7 +232,7 @@
 
       </div>
 
-      <button class="boton" type="submit">
+      <button class="boton" type="submit" onclick="paginaPrincipalPaciente('{{ documento }}')">
         Regresar
       </button>
 
@@ -276,6 +276,12 @@
       <h6>Arquitectura y Diseño de Software</h6>
       <h6>MEDICOPS</h6>
   </footer>
+
+  <script>
+    function paginaPrincipalPaciente(documento) {
+      window.location.href = "{% url 'principal_paciente' documento=documento %}";
+    }
+  </script>
     
 </body>
 </html>
