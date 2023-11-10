@@ -28,7 +28,7 @@ def agregar_adenda(request):
 
         print("> documento: " + documento_paciente + ", documento_profesional: " + documento_profesional + ", fecha: " + fecha + ", tipo: " + tipo)
 
-        url_agregar_adenda = 'http://10.128.0.6:8080/agregarAdenda/' #URL del servidor de usuarios
+        url_agregar_adenda = 'http://10.128.0.8:8000/agregarAdenda/' #URL de kong
 
         try:
 
@@ -120,7 +120,7 @@ def vista_agregar_adenda(request):
     else:
 
         documento = request.session.get('documento')
-        url_usuario = 'http://10.128.0.6:8080/usuario/' #URL del servidor de usuarios
+        url_usuario = 'http://10.128.0.8:8000/usuario/' #URL de kong
 
         try:
 
@@ -212,7 +212,7 @@ def vista_principal_paciente(request, documento):
 
 def vista_principal_director(request, documento):
 
-    url_usuario = 'http://10.128.0.6:8080/usuario/' #URL del servidor de usuarios
+    url_usuario = 'http://10.128.0.8:8000/usuario/' #URL de kong
 
     try:
 
