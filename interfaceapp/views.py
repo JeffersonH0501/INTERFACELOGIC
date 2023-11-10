@@ -247,7 +247,7 @@ def vista_principal_director(request, documento):
         
     return redirect(reverse('pagina_error'))
 
-def vista_historiaClinica_paciente(request):
+def vista_historiaClinica_paciente(request, documento):
 
     usuario = request.session.get('paciente')
 
@@ -260,7 +260,6 @@ def vista_historiaClinica_paciente(request):
         request.session['mensaje_error'] = f"Error al cargar la pagina ya que el {usuario['documento']}  no corresponde a un paciente"
     
     return redirect(reverse('pagina_error'))
-
 
 def vista_error(request):
     mensaje_error = request.session.get('mensaje_error')

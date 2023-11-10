@@ -100,39 +100,6 @@
       font-size: 27px;
     }
 
-    .input {
-      font-family: Poppins-Medium;
-      font-size: 15px;
-      color: #666666;
-      width: 80%;
-      background: #e6e6e6;
-      height: 50px;
-      border-radius: 25px;
-      padding: 0 30px 0 30px;
-      margin: 5px;
-      outline: none;
-	    border: none;
-    }
-
-    .input_descripcion {
-      font-family: Poppins-Medium;
-      font-size: 15px;
-      color: #666666;
-      width: 80%;
-      background: #e6e6e6;
-      height: 130px;
-      border-radius: 25px;
-      padding: 15px 30px;
-      margin-top: 5px;
-      margin-bottom: 34px;
-      outline: none;
-	    border: none;
-    }
-
-    textarea:focus, input:focus {
-      border-color: transparent !important;
-    }
-
     .div_mensaje {
       color: red;
       font-family: Poppins-Medium;
@@ -212,12 +179,16 @@
       </div>
 
     </div>  
-
+        
     <div class="segundo_contenedor">
 
       <div class="titulo_paciente">
         <span>Eres Un Usuario Paciente</span>
       </div>
+      
+      <button class="boton" type="button" onclick="consultarHistoriaClinica('{{ documento }}')">
+        Consultar Historia Clínica
+      </button>
 
     </div>
 
@@ -227,6 +198,12 @@
       <h6>Arquitectura y Diseño de Software</h6>
       <h6>MEDICOPS</h6>
   </footer>
+
+  <script>
+    function consultarHistoriaClinica(documento) {
+      window.location.href = "{% url 'historia_clinica' %}" + documento;
+    }
+  </script>
     
 </body>
 </html>
