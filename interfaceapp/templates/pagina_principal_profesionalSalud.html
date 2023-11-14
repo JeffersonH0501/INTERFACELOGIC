@@ -109,11 +109,12 @@
 
     .carrusel {
       display: flex;
+      width: 400%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
       transition: transform 0.5s ease-in-out;
     }
 
     .paciente {
-      flex: 0 0 calc(80% / 4); /* Ancho del paciente para mostrar 4 en una fila */
+      flex: 0 0 25%; /* Ancho del paciente para mostrar 4 en una fila */
       box-sizing: border-box;
       padding: 10px;
       text-align: center;
