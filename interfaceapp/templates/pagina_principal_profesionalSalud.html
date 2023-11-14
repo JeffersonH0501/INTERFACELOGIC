@@ -288,11 +288,18 @@
     // Funciones para navegar en el carrusel
     function mostrarAnteriores() {
       carrusel.scrollLeft -= pacienteWidth;
+      carrusel.style.transition = "transform 0.5s ease-in-out";
     }
 
     function mostrarSiguientes() {
       carrusel.scrollLeft += pacienteWidth;
+      carrusel.style.transition = "transform 0.5s ease-in-out";
     }
+
+    // Restablecer la transición después de que termine el desplazamiento
+    carrusel.addEventListener("transitionend", function () {
+      carrusel.style.transition = "none";
+    });
 
     function consultarHistoriaClinica() {
       window.location.href = "{% url 'historia_clinica' documento=documento %}"
