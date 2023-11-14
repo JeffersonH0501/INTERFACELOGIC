@@ -109,7 +109,7 @@
 
     .carrusel {
       display: flex;
-      width: 80%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
+      width: 200%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
       transition: transform 0.5s ease-in-out;
     }
 
@@ -248,14 +248,18 @@
         <span>Opciones</span>
       </div>
 
-      <button class="boton" type="button" onclick="consultarHistoriaClinica()">
-        Consultar Historia Clínica
-      </button>
+      <div class="botones_contenedor">
 
-      <button class="boton" type="button" onclick="agregarAdenda()">
-        Agregar Adenda
-      </button>
-
+        <button class="boton" type="button" onclick="consultarHistoriaClinica()">
+          Consultar Historia Clínica
+        </button>
+  
+        <button class="boton" type="button" onclick="agregarAdenda()">
+          Agregar Adenda
+        </button>
+        
+      </div>
+    
     </div>
 
   </section>
