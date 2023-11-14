@@ -219,7 +219,7 @@
         <span>Opciones</span>
       </div>
 
-      <button class="boton" type="button" onclick="agregarAdenda('{{ documento }}')">
+      <button class="boton" type="button" onclick="agregarAdenda()">
         Agregar Adenda
       </button>
 
@@ -233,7 +233,7 @@
   </footer>
 
   <script>
-    function agregarAdenda(documento) {
+    function agregarAdenda() {
       window.location.href = "{% url 'agregar_adenda' documento=documento %}";
     }
   </script>
