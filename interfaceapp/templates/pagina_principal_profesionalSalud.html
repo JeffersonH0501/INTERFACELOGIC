@@ -10,12 +10,6 @@
 	<link rel="icon" type="image/png" href="{% static 'recursos_principal/icono2.ico' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'recursos_principal/bootstrap.min.css' %}">
 
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
-
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
   <style>
     
     @font-face {
@@ -136,6 +130,7 @@
     .contenedor-botones {
       display: flex;
       justify-content: center;
+      margin-bottom: 10px;
     }
 
     .boton {
@@ -190,7 +185,7 @@
       </div>
 
       <div class="nombre_profesional">
-        <h3>{{ nombre }}</h3>
+        <h3>Dr. {{ nombre }}</h3>
       </div>
 
       <div class="datos_profesional">
@@ -224,7 +219,7 @@
 
       <div class="contenedor-pacientes">
         {% for paciente in pacientes %}
-          <div class="paciente">
+          <div class="paciente" onclick="seleccionarPaciente('{{ paciente.documento }}')">
             <img src="{{ paciente.foto }}" alt="Foto de {{ paciente.nombre }}">
             <p>{{ paciente.nombre }}</p>
           </div>
@@ -257,24 +252,24 @@
   </footer>
 
   <script>
-     $(document).ready(function(){
-      // Corregir el selector para el ID del carrusel
-      $('#carrusel').slick({
-        slidesToShow: 4, // Número de pacientes a mostrar a la vez
-        slidesToScroll: 1,
-        prevArrow: '<button class="flecha flecha-izquierda">❮</button>',
-        nextArrow: '<button class="flecha flecha-derecha">❯</button>',
-      });
-    });
-
-    function consultarHistoriaClinica() {
-      window.location.href = "{% url 'historia_clinica' documento=documento %}"
+    var documentoPaciente = "";
+  
+    function seleccionarPaciente(documento) {
+      documentoPaciente = documento; 
     }
-
+  
+    function consultarHistoriaClinica() {
+      if (documentoPaciente !== "") {
+        window.location.href = "{% url 'historia_clinica' documento=documentoPaciente %}";
+      }
+    }
+  
     function agregarAdenda() {
-      window.location.href = "{% url 'agregar_adenda' documento=documento %}";
+      if (documentoPaciente !== "") {
+        window.location.href = "{% url 'agregar_adenda' documento=documentoPaciente %}";
+      }
     }
   </script>
-    
+  
 </body>
 </html>
