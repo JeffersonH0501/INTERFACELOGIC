@@ -264,12 +264,15 @@
   </footer>
 
   <script>
+    var carrusel = document.getElementById("carrusel");
+
+    // Funciones para navegar en el carrusel
     function mostrarAnteriores() {
-      document.getElementById("carrusel").scrollLeft -= document.getElementById("carrusel").clientWidth;
+      carrusel.scrollLeft -= carrusel.clientWidth;
     }
 
     function mostrarSiguientes() {
-      document.getElementById("carrusel").scrollLeft += document.getElementById("carrusel").clientWidth;
+      carrusel.scrollLeft += carrusel.clientWidth;
     }
 
     function consultarHistoriaClinica() {
