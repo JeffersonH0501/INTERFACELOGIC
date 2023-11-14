@@ -1,0 +1,58 @@
+import requests
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django import forms
+
+def vista_login(request):
+
+    if request.method == "POST":
+
+        form = LoginForm(request.POST)
+        mensaje_error = ''
+
+        if form.is_valid():
+
+            documento = form.cleaned_data["documento"]
+            clave = form.cleaned_data["clave"]
+            informacion_usuario = {"documento": documento, "clave": clave}
+
+            try:
+                respuestaHttp = requests.post("http://34.36.86.244:80/autenticacion/", json=informacion_usuario)
+
+                if respuestaHttp.status_code == 200:
+
+                    respuesta = respuestaHttp.json().get("respuesta")
+                    tipo = respuestaHttp.json().get("tipo")
+                    
+                    if respuesta == "valido":
+
+                        if tipo == "paciente":
+                            nueva_url = reverse("principal_paciente", args=[documento])
+                        elif tipo == "profesionalSalud":
+                            nueva_url = reverse("principal_profesionalSalud", args=[documento])
+                        elif tipo == "director":
+                            nueva_url = reverse("principal_director", args=[documento])
+
+                        return redirect(nueva_url)
+
+                    elif respuesta == "invalido":
+                        mensaje_error = "Documento/Clave incorrecto"
+                else:
+                    mensaje_error = "Error en la solicitud al servidor de autenticación"
+                
+            except requests.exceptions.RequestException as e:
+                mensaje_error = "Error de conexión con el servidor de autenticación"
+            
+        return render(request, "pagina_login.html", {"error_message": mensaje_error} )
+    else:
+        return render(request, "pagina_login.html")
+    
+def vista_error(request):
+    mensaje_error = request.session.get("mensaje_error")
+    return render(request, "pagina_error.html", {"error_message": mensaje_error})
+
+class LoginForm(forms.Form):
+    documento = forms.CharField(label="Documento")
+    clave = forms.CharField(label="Clave", widget=forms.PasswordInput)
+
+
