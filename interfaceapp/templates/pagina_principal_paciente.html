@@ -188,7 +188,7 @@
         <span>Opciones</span>
       </div>
       
-      <button class="boton" type="button" onclick="consultarHistoriaClinica('{{ documento }}')">
+      <button class="boton" type="button" onclick="consultarHistoriaClinica()">
         Consultar Historia Clínica
       </button>
 
@@ -202,7 +202,7 @@
   </footer>
 
   <script>
-    function consultarHistoriaClinica(documento) {
+    function consultarHistoriaClinica() {
       window.location.href = "{% url 'historia_clinica' documento=documento %}";
     }
   </script>

@@ -22,7 +22,15 @@ def vista_principal_profesionalSalud(request, documento):
                 "edad": usuarioJson.get("edad"),
                 "telefono": usuarioJson.get("telefono"),
                 "sexo": usuarioJson.get("sexo"),
+                "pacientes": []
             }
+
+            for adenda in usuarioJson.get("adendas"):
+                usuario["adendas"].append(adenda)
+
+            for i in range(8):
+                nombre = "Jefferson Alberto Hernandez" + i
+                usuario["pacientes"].append({"foto":"https://i.ibb.co/cb8X16x/didier.png","nombre":nombre})
 
             request.session["usuario"] = usuario
 

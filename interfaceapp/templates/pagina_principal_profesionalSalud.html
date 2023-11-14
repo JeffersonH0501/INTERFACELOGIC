@@ -90,53 +90,35 @@
       text-align: center;
     }
 
-    .titulo_paciente {
+    .titulo {
       margin-bottom: 20px;
     }
 
-    .titulo_paciente span {
+    .titulo span {
       font-family: Poppins-Bold;
       color: #333333;
       font-size: 27px;
     }
 
-    .input {
-      font-family: Poppins-Medium;
-      font-size: 15px;
-      color: #666666;
+    .contenedor-carrusel {
       width: 80%;
-      background: #e6e6e6;
-      height: 50px;
-      border-radius: 25px;
-      padding: 0 30px 0 30px;
-      margin: 5px;
-      outline: none;
-	    border: none;
+      margin: 20px auto;
+      overflow: hidden;
     }
 
-    .input_descripcion {
-      font-family: Poppins-Medium;
-      font-size: 15px;
-      color: #666666;
-      width: 80%;
-      background: #e6e6e6;
-      height: 130px;
-      border-radius: 25px;
-      padding: 15px 30px;
-      margin-top: 5px;
-      margin-bottom: 34px;
-      outline: none;
-	    border: none;
+    .carrusel {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
     }
 
-    textarea:focus, input:focus {
-      border-color: transparent !important;
-    }
-
-    .div_mensaje {
-      color: red;
-      font-family: Poppins-Medium;
-      margin-bottom: 5px;
+    .paciente {
+      min-width: 25%;
+      box-sizing: border-box;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin: 0 5px;
     }
 
     .boton {
@@ -215,9 +197,28 @@
 
     <div class="segundo_contenedor">
 
-      <div class="titulo_paciente">
+      <div class="titulo">
+        <span>Pacientes</span>
+      </div>
+
+      <div class="contenedor-carrusel">
+        <div class="carrusel" id="carrusel">
+          {% for paciente in pacientes %}
+            <div class="paciente">
+              <img src="{{ paciente.foto }}" alt="Foto de {{ paciente.nombre }}">
+              <p>{{ paciente.nombre }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="titulo">
         <span>Opciones</span>
       </div>
+
+      <button class="boton" type="button" onclick="consultarHistoriaClinica()">
+        Consultar Historia Clínica
+      </button>
 
       <button class="boton" type="button" onclick="agregarAdenda()">
         Agregar Adenda
@@ -233,6 +234,18 @@
   </footer>
 
   <script>
+    function mostrarAnteriores() {
+      carrusel.scrollLeft -= carrusel.clientWidth;
+    }
+
+    function mostrarSiguientes() {
+      carrusel.scrollLeft += carrusel.clientWidth;
+    }
+
+    function consultarHistoriaClinica() {
+      window.location.href = "{% url 'historia_clinica' documento=documento %}"
+    }
+
     function agregarAdenda() {
       window.location.href = "{% url 'agregar_adenda' documento=documento %}";
     }
