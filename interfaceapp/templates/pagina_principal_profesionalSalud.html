@@ -110,16 +110,22 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 20px;
-      padding: 30px;
+      padding-left: 30px;
+      padding-right: 30px;
     }
 
     .paciente {
       text-align: center;
+      border: 1px solid #ddd; /* Agrega un borde */
+      border-radius: 10px; /* Ajusta el radio del borde según sea necesario */
+      overflow: hidden; /* Asegura que las esquinas sean semirredondas */
     }
 
     .paciente img {
       max-width: 100%;
       height: auto;
+      border-bottom-left-radius: 0; /* Ajusta el radio inferior del borde de la imagen */
+      border-bottom-right-radius: 0; /* Ajusta el radio inferior del borde de la imagen */
     }
 
     .contenedor-botones {
