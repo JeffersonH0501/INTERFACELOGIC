@@ -283,15 +283,17 @@
   </footer>
 
   <script>
-    $(document).ready(function(){
-      // Configuración del carrusel
-      $('#carrusel').slick({
-        slidesToShow: 4, // Número de pacientes a mostrar a la vez
-        slidesToScroll: 1,
-        prevArrow: '<button class="flecha flecha-izquierda">❮</button>',
-        nextArrow: '<button class="flecha flecha-derecha">❯</button>',
-      });
-    });
+    var carrusel = document.getElementById("carrusel");
+    var pacienteWidth = document.querySelector(".paciente").offsetWidth;
+
+    // Funciones para navegar en el carrusel
+    function mostrarAnteriores() {
+      carrusel.scrollLeft -= pacienteWidth;
+    }
+
+    function mostrarSiguientes() {
+      carrusel.scrollLeft += pacienteWidth;
+    }
 
     function consultarHistoriaClinica() {
       window.location.href = "{% url 'historia_clinica' documento=documento %}"
