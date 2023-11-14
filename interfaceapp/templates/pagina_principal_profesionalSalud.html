@@ -109,7 +109,7 @@
 
     .carrusel {
       display: flex;
-      width: 400%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
+      width: 80%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
       transition: transform 0.5s ease-in-out;
     }
 
@@ -159,6 +159,7 @@
       background: #0a8ec3;
       outline: none !important;
       border: none;
+      margin: 10px;
     }
 
     .boton:hover {
@@ -269,11 +270,11 @@
 
     // Funciones para navegar en el carrusel
     function mostrarAnteriores() {
-      carrusel.scrollLeft -= carrusel.clientWidth;
+      carrusel.scrollLeft -= carrusel.offsetWidth; // Usa offsetWidth en lugar de clientWidth
     }
 
     function mostrarSiguientes() {
-      carrusel.scrollLeft += carrusel.clientWidth;
+      carrusel.scrollLeft += carrusel.offsetWidth; // Usa offsetWidth en lugar de clientWidth
     }
 
     function consultarHistoriaClinica() {
