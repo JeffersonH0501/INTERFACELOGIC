@@ -219,7 +219,7 @@
         <span>Agregar Adenda</span>
       </div>
 
-      <form action="{% url 'agregar_adenda' %}" method="post">
+      <form action="{% url 'agregar_adenda' documento=documento %}" method="post">
 
         {% csrf_token %}
 
