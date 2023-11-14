@@ -29,7 +29,7 @@ def vista_principal_profesionalSalud(request, documento):
                 usuario["adendas"].append(adenda)
 
             for i in range(8):
-                nombre = "Jefferson Alberto Hernandez" + i
+                nombre = "Jefferson Alberto Hernandez" + str(i)
                 usuario["pacientes"].append({"foto":"https://i.ibb.co/cb8X16x/didier.png","nombre":nombre})
 
             request.session["usuario"] = usuario
