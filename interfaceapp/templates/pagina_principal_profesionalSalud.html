@@ -10,6 +10,12 @@
 	<link rel="icon" type="image/png" href="{% static 'recursos_principal/icono2.ico' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'recursos_principal/bootstrap.min.css' %}">
 
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
   <style>
     
     @font-face {
@@ -164,8 +170,8 @@
       background: #0a8ec3;
       outline: none !important;
       border: none;
-      padding-top: 4px;
-      padding-bottom: 4px;
+      padding-top: 8px;
+      padding-bottom: 8px;
       margin: 10px;
     }
 
@@ -277,16 +283,15 @@
   </footer>
 
   <script>
-    var carrusel = document.getElementById("carrusel");
-
-    // Funciones para navegar en el carrusel
-    function mostrarAnteriores() {
-      carrusel.scrollLeft -= carrusel.offsetWidth; // Usa offsetWidth en lugar de clientWidth
-    }
-
-    function mostrarSiguientes() {
-      carrusel.scrollLeft += carrusel.offsetWidth; // Usa offsetWidth en lugar de clientWidth
-    }
+    $(document).ready(function(){
+      // Configuración del carrusel
+      $('#carrusel').slick({
+        slidesToShow: 4, // Número de pacientes a mostrar a la vez
+        slidesToScroll: 1,
+        prevArrow: '<button class="flecha flecha-izquierda">❮</button>',
+        nextArrow: '<button class="flecha flecha-derecha">❯</button>',
+      });
+    });
 
     function consultarHistoriaClinica() {
       window.location.href = "{% url 'historia_clinica' documento=documento %}"
