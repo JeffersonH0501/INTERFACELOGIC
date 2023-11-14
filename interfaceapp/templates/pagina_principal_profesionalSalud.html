@@ -258,21 +258,24 @@
       documentoPaciente = documento; 
     }
   
-    function redireccionar(url) {
+    function consultarHistoriaClinica() {
       if (documentoPaciente !== null) {
-        window.location.href = url + "?documento=" + documentoPaciente;
+        url = "{% url 'historia_clinica' documento=";
+        url += documentoPaciente;
+        url += " %}"
+        window.location.href = url;
       }
     }
   
-    function consultarHistoriaClinica() {
-      redireccionar("{% url 'historia_clinica' %}");
-    }
-  
     function agregarAdenda() {
-      redireccionar("{% url 'agregar_adenda' %}");
+      if (documentoPaciente !== null) {
+        url = "{% url 'agregar_adenda' documento=";
+        url += documentoPaciente;
+        url += " %}"
+        window.location.href = url;
+      }
     }
   </script>
-  
   
 </body>
 </html>
