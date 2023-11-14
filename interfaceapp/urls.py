@@ -1,5 +1,6 @@
 from django.urls import path
-from . import views
+from ..interfaceapp.views import views
+#from . import views
 
 urlpatterns = [
     path('', views.vista_login),

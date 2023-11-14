@@ -149,6 +149,7 @@ def vista_agregar_adenda(request):
                     request.session['telefono'] = usuario['telefono']
                     request.session['sexo'] = usuario['sexo']
 
+                    print("entro")
                     return render(request, 'pagina_agregar_adenda.html', usuario)
 
                 else:
@@ -197,6 +198,7 @@ def vista_principal_paciente(request, documento):
             request.session['paciente'] = usuario
 
             if usuario['tipo'] == 'paciente':
+                print("entro")
                 return render(request, 'pagina_principal_paciente.html', usuario)
 
             else:
