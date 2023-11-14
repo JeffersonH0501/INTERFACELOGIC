@@ -109,7 +109,7 @@
 
     .carrusel {
       display: flex;
-      width: 200%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
+      width: 300%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
       transition: transform 0.5s ease-in-out;
     }
 
@@ -150,6 +150,10 @@
       right: 0;
     }
 
+    .contenedor-botones {
+      display: flex;
+    }
+
     .boton {
       font-family: Poppins-Medium;
       color: rgb(245, 245, 245);
@@ -159,7 +163,8 @@
       background: #0a8ec3;
       outline: none !important;
       border: none;
-      margin: 10px;
+      padding-top: 4px;
+      padding-bottom: 4px;
     }
 
     .boton:hover {
@@ -248,7 +253,7 @@
         <span>Opciones</span>
       </div>
 
-      <div class="botones_contenedor">
+      <div class="contenedor-botones">
 
         <button class="boton" type="button" onclick="consultarHistoriaClinica()">
           Consultar Historia Clínica
@@ -257,7 +262,7 @@
         <button class="boton" type="button" onclick="agregarAdenda()">
           Agregar Adenda
         </button>
-        
+
       </div>
     
     </div>
