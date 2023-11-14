@@ -260,13 +260,13 @@
   
     function consultarHistoriaClinica() {
       if (documentoPaciente !== null) {
-        window.location.href = "{% url 'historia_clinica' documento={{documentoPaciente}} %}";
+        window.location.href = "{% url 'historia_clinica' documento=documento=${documentoPaciente} %}";
       }
     }
   
     function agregarAdenda() {
       if (documentoPaciente !== null) {
-        window.location.href = "{% url 'agregar_adenda' documento={{documentoPaciente}} %}";
+        window.location.href = "{% url 'agregar_adenda' documento=${documentoPaciente} %}";
       }
     }
   </script>
