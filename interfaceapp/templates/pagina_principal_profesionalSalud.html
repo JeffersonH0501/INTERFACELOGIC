@@ -282,10 +282,10 @@
   </footer>
 
   <script>
-    $(document).ready(function(){
+    $(window).on('load', function() {
       $('.carrusel').slick({
         infinite: true,
-        slidesToShow: 4,  // Puedes ajustar el número de pacientes visibles a la vez
+        slidesToShow: 4,
         slidesToScroll: 1,
         prevArrow: $('.flecha-izquierda'),
         nextArrow: $('.flecha-derecha'),
