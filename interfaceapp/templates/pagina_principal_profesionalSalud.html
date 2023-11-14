@@ -104,6 +104,7 @@
       width: 80%;
       margin: 20px auto;
       overflow: hidden;
+      position: relative;
     }
 
     .carrusel {
@@ -112,7 +113,7 @@
     }
 
     .paciente {
-      max-width: 200px; /* Ancho máximo del elemento del paciente */
+      flex: 0 0 calc(80% / 4); /* Ancho del paciente para mostrar 4 en una fila */
       box-sizing: border-box;
       padding: 10px;
       text-align: center;
@@ -125,6 +126,27 @@
       max-width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
       height: auto;
       border-radius: 50%; /* Para imágenes redondas, si es necesario */
+    }
+
+    .flecha {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .flecha-izquierda {
+      left: 0;
+    }
+
+    .flecha-derecha {
+      right: 0;
     }
 
     .boton {
@@ -208,6 +230,7 @@
       </div>
 
       <div class="contenedor-carrusel">
+        <button class="flecha flecha-izquierda" onclick="mostrarAnteriores()">❮</button>
         <div class="carrusel" id="carrusel">
           {% for paciente in pacientes %}
             <div class="paciente">
@@ -216,6 +239,7 @@
             </div>
           {% endfor %}
         </div>
+        <button class="flecha flecha-derecha" onclick="mostrarSiguientes()">❯</button>
       </div>
 
       <div class="titulo">
@@ -241,12 +265,12 @@
 
   <script>
     function mostrarAnteriores() {
-    document.getElementById("carrusel").scrollLeft -= document.getElementById("carrusel").clientWidth;
-  }
+      document.getElementById("carrusel").scrollLeft -= document.getElementById("carrusel").clientWidth;
+    }
 
-  function mostrarSiguientes() {
-    document.getElementById("carrusel").scrollLeft += document.getElementById("carrusel").clientWidth;
-  }
+    function mostrarSiguientes() {
+      document.getElementById("carrusel").scrollLeft += document.getElementById("carrusel").clientWidth;
+    }
 
     function consultarHistoriaClinica() {
       window.location.href = "{% url 'historia_clinica' documento=documento %}"
