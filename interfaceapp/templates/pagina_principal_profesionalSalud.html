@@ -117,7 +117,11 @@
     }
 
     .paciente:hover {
-      border: 2px solid #0a8ec3; /* Cambia el borde al pasar el mouse */
+      cursor: pointer;
+    }
+
+    .paciente.seleccionado {
+      border: 2px solid #5e9fd5; /* Cambia el borde cuando el paciente está seleccionado */
     }
 
     .paciente p {
@@ -256,6 +260,20 @@
   </footer>
 
   <script>
+    var pacienteSeleccionado = null;
+
+    function seleccionarPaciente(documento) {
+      if (pacienteSeleccionado !== null) {
+        pacienteSeleccionado.classList.remove('seleccionado');
+      }
+
+      pacienteSeleccionado = document.querySelector('.paciente[data-documento="' + documento + '"]');
+      if (pacienteSeleccionado !== null) {
+        pacienteSeleccionado.classList.add('seleccionado');
+        documentoPaciente = documento;
+      }
+    }
+
     var documentoPaciente = null;
   
     function seleccionarPaciente(documento) {
