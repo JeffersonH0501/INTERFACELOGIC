@@ -252,20 +252,20 @@
   </footer>
 
   <script>
-    var documentoPaciente = "";
+    var documentoPaciente = null;
   
     function seleccionarPaciente(documento) {
       documentoPaciente = documento; 
     }
   
     function consultarHistoriaClinica() {
-      if (documentoPaciente !== "") {
+      if (documentoPaciente !== null) {
         window.location.href = "{% url 'historia_clinica' documento=documentoPaciente %}";
       }
     }
   
     function agregarAdenda() {
-      if (documentoPaciente !== "") {
+      if (documentoPaciente !== null) {
         window.location.href = "{% url 'agregar_adenda' documento=documentoPaciente %}";
       }
     }
