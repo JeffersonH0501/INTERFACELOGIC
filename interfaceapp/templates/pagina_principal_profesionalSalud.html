@@ -106,53 +106,19 @@
       font-size: 27px;
     }
 
-    .contenedor-carrusel {
-      width: 80%;
-      margin: 20px auto;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .carrusel {
-      display: flex;
-      width: 95%; /* Ajusta según el número de pacientes que desees mostrar a la vez */
-      overflow: hidden;
-      transition: transform 0.5s ease-in-out;
+    .contenedor-pacientes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
     }
 
     .paciente {
-      box-sizing: border-box;
-      padding: 10px;
       text-align: center;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin: 0 5px;
     }
 
     .paciente img {
-      max-width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
+      max-width: 100%;
       height: auto;
-    }
-
-    .flecha {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 30px;
-      height: 30px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .flecha-izquierda {
-      left: 0;
-    }
-
-    .flecha-derecha {
-      right: 0;
     }
 
     .contenedor-botones {
@@ -243,17 +209,13 @@
         <span>Pacientes</span>
       </div>
 
-      <div class="contenedor-carrusel">
-        <button class="flecha flecha-izquierda" onclick="mostrarAnteriores()">❮</button>
-        <div class="carrusel" id="carrusel">
-          {% for paciente in pacientes %}
-            <div class="paciente">
-              <img src="{{ paciente.foto }}" alt="Foto de {{ paciente.nombre }}">
-              <p>{{ paciente.nombre }}</p>
-            </div>
-          {% endfor %}
-        </div>
-        <button class="flecha flecha-derecha" onclick="mostrarSiguientes()">❯</button>
+      <div class="contenedor-pacientes">
+        {% for paciente in pacientes %}
+          <div class="paciente">
+            <img src="{{ paciente.foto }}" alt="Foto de {{ paciente.nombre }}">
+            <p>{{ paciente.nombre }}</p>
+          </div>
+        {% endfor %}
       </div>
 
       <div class="titulo">
