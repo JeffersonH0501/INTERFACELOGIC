@@ -112,13 +112,19 @@
     }
 
     .paciente {
-      min-width: 25%;
+      max-width: 200px; /* Ancho máximo del elemento del paciente */
       box-sizing: border-box;
       padding: 10px;
       text-align: center;
       border: 1px solid #ddd;
       border-radius: 5px;
       margin: 0 5px;
+    }
+
+    .paciente img {
+      max-width: 100%; /* La imagen ocupa el 100% del ancho del contenedor */
+      height: auto;
+      border-radius: 50%; /* Para imágenes redondas, si es necesario */
     }
 
     .boton {
@@ -235,12 +241,12 @@
 
   <script>
     function mostrarAnteriores() {
-      carrusel.scrollLeft -= carrusel.clientWidth;
-    }
+    document.getElementById("carrusel").scrollLeft -= document.getElementById("carrusel").clientWidth;
+  }
 
-    function mostrarSiguientes() {
-      carrusel.scrollLeft += carrusel.clientWidth;
-    }
+  function mostrarSiguientes() {
+    document.getElementById("carrusel").scrollLeft += document.getElementById("carrusel").clientWidth;
+  }
 
     function consultarHistoriaClinica() {
       window.location.href = "{% url 'historia_clinica' documento=documento %}"
