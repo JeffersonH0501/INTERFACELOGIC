@@ -284,22 +284,25 @@
   <script>
     var carrusel = document.getElementById("carrusel");
     var pacienteWidth = document.querySelector(".paciente").offsetWidth;
+    var pacientes = document.querySelectorAll(".paciente");
+
+    // Calcular el ancho total del carrusel
+    var carruselWidth = pacientes.length * pacienteWidth;
 
     // Funciones para navegar en el carrusel
     function mostrarAnteriores() {
       carrusel.scrollLeft -= pacienteWidth;
-      carrusel.style.transition = "transform 0.5s ease-in-out";
+      if (carrusel.scrollLeft < 0) {
+        carrusel.scrollLeft = 0;
+      }
     }
 
     function mostrarSiguientes() {
       carrusel.scrollLeft += pacienteWidth;
-      carrusel.style.transition = "transform 0.5s ease-in-out";
+      if (carrusel.scrollLeft + carrusel.offsetWidth > carruselWidth) {
+        carrusel.scrollLeft = carruselWidth - carrusel.offsetWidth;
+      }
     }
-
-    // Restablecer la transición después de que termine el desplazamiento
-    carrusel.addEventListener("transitionend", function () {
-      carrusel.style.transition = "none";
-    });
 
     function consultarHistoriaClinica() {
       window.location.href = "{% url 'historia_clinica' documento=documento %}"
