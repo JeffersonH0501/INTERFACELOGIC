@@ -17,6 +17,7 @@ urlpatterns = [
 
     path("profesionalSalud/<str:documento>/agregar_adenda/<str:documento_paciente>/", logica_profesionalSalud.vista_agregar_adenda, name="profesionalSalud_agregar_adenda"),
 
+    path('actualizar_documento_paciente/', logica_profesionalSalud.actualizar_documento_paciente, name='actualizar_documento_paciente'),
     path("pagina_error/", logica.vista_error, name="pagina_error")
 ]
 

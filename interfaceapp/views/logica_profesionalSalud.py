@@ -91,10 +91,14 @@ def vista_agregar_adenda(request, documento):
 
     return redirect(reverse("pagina_error"))
     
+def actualizar_documento_paciente(request):
+    if request.method == 'POST' and request.is_ajax():
+        documento_paciente = request.POST.get('documento_paciente')
+        request.session['documento_paciente'] = documento_paciente
 
 def vista_principal_profesionalSalud2(request):
 
-    mensaje_error =  request.POST.get('documento_paciente')
+    mensaje_error =  request.session.get("documento_paciente")
 
     return render(request, 'pagina_error.html', {"error_message": mensaje_error})
 

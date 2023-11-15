@@ -10,8 +10,6 @@
 	<link rel="icon" type="image/png" href="{% static 'recursos_principal/icono2.ico' %}"/>
   <link rel="stylesheet" type="text/css" href="{% static 'recursos_principal/bootstrap.min.css' %}">
 
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
   <style>
     
     @font-face {
@@ -262,15 +260,26 @@
   </footer>
 
   <script>
-    
-    var documento_paciente = null;
 
     function seleccionarPaciente(documento) {
-      documento_paciente = documento;
+      usuario.documento_paciente = documento;
+
+      fetch("{% url 'actualizar_documento_paciente' %}", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify({documento_paciente: documento}),
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+      });
     }
   
     function consultarHistoriaClinica() {
-      $.post("{% url 'profesionalSalud_consultar_historia' %}",{"documento_paciente": documento_paciente });
+      window.location.href = "{% url 'profesionalSalud_consultar_historia' %}";
     }
 
     function agregarAdenda() {
