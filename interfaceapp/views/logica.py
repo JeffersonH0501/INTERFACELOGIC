@@ -26,7 +26,7 @@ def vista_login(request):
                     
                     if respuesta == "valido":
                          
-                        request.session["usuario"]["documento"] = documento
+                        request.session["documento"] = documento
 
                         if tipo == "paciente":
                             nueva_url = reverse("paciente")

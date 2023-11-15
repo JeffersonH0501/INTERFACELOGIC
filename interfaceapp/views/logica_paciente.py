@@ -4,7 +4,7 @@ from django.urls import reverse
 
 def vista_principal_paciente(request):
 
-    documento = request.session.get("usuario").get("documento")
+    documento = request.session.get("documento")
 
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento})
