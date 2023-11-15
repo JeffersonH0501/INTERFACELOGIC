@@ -164,12 +164,6 @@
       margin-left: 10px;
     }
 
-    .datos_paciente {
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
     .informacion {
       margin-bottom: 20px;
       text-align: left;
@@ -354,7 +348,7 @@
       </form>
 
       {% if paciente %}
-      <div class="datos_paciente">
+      <div class="informacion">
         <div class="datos_foto">
           <img src="{{ paciente.foto }}" atl="foto_paciente">
         </div>
@@ -372,8 +366,6 @@
               <h6>{{ paciente.sexo }}</h6>
             </div>
         </div>
-      </div>
-      <div class="informacion">
         <span>Diagnosticos</span>
         <h6> {{ paciente.historia_clinica.diagnosticos }} </h6>
         <span>Tratamiento</span>
