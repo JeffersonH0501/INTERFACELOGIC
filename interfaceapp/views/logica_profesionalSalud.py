@@ -23,7 +23,6 @@ def vista_principal_profesionalSalud(request, documento):
                 "telefono": usuarioJson.get("telefono"),
                 "sexo": usuarioJson.get("sexo"),
                 "pacientes": [],
-                "documento_paciente": "0000000000"
             }
 
             for i in range(8):
@@ -95,9 +94,7 @@ def vista_agregar_adenda(request, documento):
 
 def vista_principal_profesionalSalud2(request):
 
-    usuario = request.session.get("usuario")
-
-    mensaje_error = usuario["documento_paciente"]
+    mensaje_error =  request.POST.get('documento_paciente')
 
     return render(request, 'pagina_error.html', {"error_message": mensaje_error})
 

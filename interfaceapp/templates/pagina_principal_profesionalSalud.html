@@ -260,14 +260,19 @@
   </footer>
 
   <script>
+    
+    var documento_paciente = null;
 
     function seleccionarPaciente(documento) {
-      usuario.documento_paciente = documento;
-      alert('Paciente seleccionado: ' + documento);
+      documento_paciente = documento;
     }
   
     function consultarHistoriaClinica() {
-      window.location.href = "{% url 'profesionalSalud_consultar_historia' %}";
+      $.ajax({
+        url: "{% url 'profesionalSalud_consultar_historia' %}",
+        method: "POST",
+        data: { "documento_paciente": documento_paciente }
+      });
     }
 
     function agregarAdenda() {
