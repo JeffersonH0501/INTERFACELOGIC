@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 from datetime import datetime
+from django.http import JsonResponse
 
 def vista_principal_profesionalSalud(request, documento):
 
