@@ -102,9 +102,9 @@ def vista_consultar_historia(request):
         if form.is_valid():
 
             documento_paciente = form.cleaned_data["documento_paciente"]
-
+            
             try:
-                respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento_paciente": documento_paciente})
+                respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento_paciente})
 
                 if respuestaHttp.status_code == 200:
 
