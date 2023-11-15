@@ -321,19 +321,19 @@
         <div class="datos">
             <div class="datos_edad">
                 <span>Edad</span>
-                <h6>19</h6>
+                <h6>{{ paciente.edad}}</h6>
             </div>
             <div class="datos_genero">
                 <span>Genero</span>
-                <h6>Masculino</h6>
+                <h6>{{ paciente.sexo}}</h6>
             </div>
         </div>
         <span>Diagnosticos</span>
-        <h6>diagnosticos</h6>
+        <h6> {{ paciente.historia_clinica.diagnosticos }} </h6>
         <span>Tratamiento</span>
-        <h6>tratamiento</h6>
+        <h6>{{ paciente.historia_clinica.tratamientos }}</h6>
         <span>Notas</span>
-        <h6>notas</h6>
+        <h6>{{ paciente.historia_clinica.notas }}</h6>
         <span>Adendas</span>
         <table class="adendas">
           <tr>
@@ -341,7 +341,7 @@
             <th style="width: 20%;">Tipo</th>
             <th style="width: 60%;">Descripción</th>
           </tr>
-          {% for adenda in adendas %}
+          {% for adenda in paciente.adendas %}
           <tr>
             <td>{{ adenda.fecha }}</td>
             <td>{{ adenda.tipo }}</td>
