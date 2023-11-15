@@ -268,11 +268,7 @@
     }
   
     function consultarHistoriaClinica() {
-      $.ajax({
-        url: "{% url 'profesionalSalud_consultar_historia' %}",
-        method: "POST",
-        data: { "documento_paciente": documento_paciente }
-      });
+      $.post("{% url 'profesionalSalud_consultar_historia' %}",{"documento_paciente": documento_paciente });
     }
 
     function agregarAdenda() {
