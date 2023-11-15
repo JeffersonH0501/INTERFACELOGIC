@@ -240,7 +240,7 @@
 
       <div class="contenedor-botones">
 
-        <button class="boton" type="button" onclick="consultarHistoriaClinica('{{ documento }}')">
+        <button class="boton" type="button" onclick="consultarHistoriaClinica()">
           Consultar Historia Clínica
         </button>
   
@@ -262,10 +262,10 @@
   <script>
 
     function seleccionarPaciente(documento) {
-      documento_paciente = documento; 
+      usuario.documento_paciente = documento;
     }
   
-    function consultarHistoriaClinica(documento) {
+    function consultarHistoriaClinica() {
       window.location.href = "{% url 'profesionalSalud_consultar_historia' %}";
     }
 
