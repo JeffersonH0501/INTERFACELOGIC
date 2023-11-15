@@ -127,16 +127,27 @@
         display: flex;
     }
 
+    .datos_nombre {
+      margin-right: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
     .datos_edad {
-        margin-right: 20px;
-        display: flex;
-        flex-direction: column;
+      margin-right: 20px;
+      display: flex;
+      flex-direction: column;
     }
 
     .datos_genero {
-        margin-left: 20px;
-        display: flex;
-        flex-direction: column;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .datos_foto {
+      margin-left: 20px;
+      display: flex
     }
 
     .informacion {
@@ -325,13 +336,20 @@
       {% if paciente %}
       <div class="informacion">
         <div class="datos">
+            <div class="datos_nombre">
+              <span>Nombre</span>
+              <h6>{{ paciente.nombre }}</h6>
+            </div>
             <div class="datos_edad">
-                <span>Edad</span>
-                <h6>{{ paciente.edad}}</h6>
+              <span>Edad</span>
+              <h6>{{ paciente.edad }}</h6>
             </div>
             <div class="datos_genero">
-                <span>Genero</span>
-                <h6>{{ paciente.sexo}}</h6>
+              <span>Genero</span>
+              <h6>{{ paciente.sexo }}</h6>
+            </div>
+            <div class="datos_foto">
+              <img src="{{ paciente.foto }}" atl="foto_paciente">
             </div>
         </div>
         <span>Diagnosticos</span>
