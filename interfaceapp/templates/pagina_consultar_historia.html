@@ -287,7 +287,7 @@
 
       </div>
 
-      <button class="boton_regresar" type="submit" onclick="paginaPrincipalPaciente('{{ documento }}')">
+      <button class="boton_regresar" type="submit" onclick="paginaPrincipalProfesionalSalud('{{ documento }}')">
         Regresar
       </button>
 
@@ -316,6 +316,7 @@
 
       </form>
 
+      {% if paciente %}
       <div class="informacion">
         <div class="datos">
             <div class="datos_edad">
@@ -349,6 +350,7 @@
           {% endfor %}
         </table>
       </div>
+      {% endif %}
 
     </div>
 
@@ -358,6 +360,12 @@
       <h6>Arquitectura y Diseño de Software</h6>
       <h6>MEDICOPS</h6>
   </footer>
+
+  <script>
+    function paginaPrincipalProfesionalSalud() {
+      window.location.href = "{% url 'profesionalSalud' %}";
+    }
+  </script>
     
 </body>
 </html>

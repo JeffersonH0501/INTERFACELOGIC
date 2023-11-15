@@ -92,11 +92,68 @@ def vista_agregar_adenda(request):
 def vista_consultar_historia(request):
 
     usuario = request.session.get("usuario")
-    
-    return render(request, 'pagina_consultar_historia.html', usuario)
+    contexto = usuario.copy()
+
+    if request.method == "POST":
+
+        form = AdendaForm(request.POST)
+        contexto = usuario.copy()
+
+        if form.is_valid():
+
+            documento_paciente = form.cleaned_data["documento_paciente"]
+
+            try:
+                respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento_paciente": documento_paciente})
+
+                if respuestaHttp.status_code == 200:
+
+                    pacienteJson = respuestaHttp.json()
+
+                    paciente = {
+                        "documento": pacienteJson.get("documento"),
+                        "clave": pacienteJson.get("clave"),
+                        "tipo": pacienteJson.get("tipo"),
+                        "foto": pacienteJson.get("foto"),
+                        "nombre": pacienteJson.get("nombre"),
+                        "edad": pacienteJson.get("edad"),
+                        "telefono": pacienteJson.get("telefono"),
+                        "sexo": pacienteJson.get("sexo"),
+                        "historia_clinica": {
+                            'diagnosticos': pacienteJson.get('historia_clinica').get('diagnosticos'),
+                            'tratamientos': pacienteJson.get('historia_clinica').get('tratamientos'),
+                            'notas': pacienteJson.get('historia_clinica').get('notas')
+                        },
+                        "adendas": []
+                    }
+
+                    for adenda in pacienteJson.get("adendas"):
+                        usuario["adendas"].append(adenda)
+                    
+                    contexto["paciente"] = paciente
+
+                    return render(request, "pagina_consultar_historia.html", contexto)
+                else:
+                    contexto["mensaje"] = f"Error {respuestaHttp.status_code} al consultar usuario"
+                
+            except requests.exceptions.RequestException as e:
+                contexto["mensaje"] = "Error de conexión con el servidor de usuarios"
+
+        return render(request, "pagina_consultar_historia.html", contexto)
+    else:
+
+        if usuario["tipo"] == "profesionalSalud":
+            return render(request, "pagina_consultar_historia.html", usuario)
+        else:
+            request.session["mensaje_error"] = f"Error al cargar la pagina ya que el {usuario['documento']} no corresponde a un profesional de salud"
+
+    return redirect(reverse("pagina_error"))
 
 class AdendaForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
     fecha = forms.CharField(label="Fecha")
     tipo = forms.CharField(label="Tipo")
     descripcion = forms.CharField(label="Descripción")
+
+class DocumentoForm(forms.Form):
+    documento_paciente = forms.CharField(label="Documento Paciente")
