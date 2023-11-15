@@ -23,7 +23,6 @@ def vista_principal_profesionalSalud(request, documento):
                 "telefono": usuarioJson.get("telefono"),
                 "sexo": usuarioJson.get("sexo"),
                 "pacientes": [],
-                "documento_paciente": ""
             }
 
             for i in range(8):
