@@ -260,14 +260,13 @@
   </footer>
 
   <script>
-    var documentoPaciente = null;
-  
+
     function seleccionarPaciente(documento) {
-      documentoPaciente = documento; 
+        contexto.documento_paciente = documento;
     }
   
     function consultarHistoriaClinica() {
-      if (documentoPaciente !== null) {
+      if (documentoPaciente !== '0000000000') {
         window.location.href = "{% url 'profesionalSalud_consultar_historia' documento=documento documento_paciente=documento_paciente %}";
       }
     }
