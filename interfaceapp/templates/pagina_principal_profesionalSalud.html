@@ -260,20 +260,6 @@
   </footer>
 
   <script>
-    var pacienteSeleccionado = null;
-
-    function seleccionarPaciente(documento) {
-      if (pacienteSeleccionado !== null) {
-        pacienteSeleccionado.classList.remove('seleccionado');
-      }
-
-      pacienteSeleccionado = document.querySelector('.paciente[data-documento="' + documento + '"]');
-      if (pacienteSeleccionado !== null) {
-        pacienteSeleccionado.classList.add('seleccionado');
-        documentoPaciente = documento;
-      }
-    }
-
     var documentoPaciente = null;
   
     function seleccionarPaciente(documento) {
@@ -282,20 +268,12 @@
   
     function consultarHistoriaClinica() {
       if (documentoPaciente !== null) {
-        url = "{% url 'historia_clinica' documento=";
-        url += documentoPaciente;
-        url += " %}"
-        window.location.href = "historia_clinica/"+documentoPaciente+"/";
+        window.location.href = "{% url 'profesionalSalud_consultar_historia' %}?documento_paciente=" + documentoPaciente;
       }
     }
   
     function agregarAdenda() {
-      if (documentoPaciente !== null) {
-        url = "{% url 'agregar_adenda' documento=";
-        url += documentoPaciente;
-        url += " %}"
-        window.location.href = url;
-      }
+      window.location.href = "{% url 'profesionalSalud_agregar_adenda' %}?documento_paciente=" + documentoPaciente;
     }
   </script>
   

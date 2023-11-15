@@ -22,11 +22,9 @@ def vista_principal_profesionalSalud(request, documento):
                 "edad": usuarioJson.get("edad"),
                 "telefono": usuarioJson.get("telefono"),
                 "sexo": usuarioJson.get("sexo"),
-                "pacientes": []
+                "pacientes": [],
+                "documento_paciente": ""
             }
-
-            for adenda in usuarioJson.get("adendas"):
-                usuario["adendas"].append(adenda)
 
             for i in range(8):
                 nombre = "Jefferson Alberto Hernandez" + str(i)

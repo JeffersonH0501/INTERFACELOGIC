@@ -11,11 +11,10 @@ urlpatterns = [
     path("principal_profesionalSalud/<str:documento>/", logica_profesionalSalud.vista_principal_profesionalSalud, name="principal_profesionalSalud"),
     path('principal_director/<str:documento>/', logica_director.vista_principal_director, name="principal_director"),
 
-    path("principal_profesionalSalud/<str:documento>/historia_clinica/<str:documento_paciente>", logica_profesionalSalud.vista_principal_profesionalSalud, name="principal_profesionalSalud"),
-
-
     path("historia_clinica/<str:documento>/", logica_paciente.vista_historia_clinica, name = "historia_clinica"),
-    path("agregar_adenda/<str:documento>/", logica_profesionalSalud.vista_agregar_adenda, name="agregar_adenda"),
+    path("profesionalSalud/<str:documento>/historia_clinica/<str:documento_paciente>", logica_profesionalSalud.vista_principal_profesionalSalud, name="profesionalSalud_consultar_historia"),
+
+    path("profesionalSalud/<str:documento>/agregar_adenda/<str:documento_paciente>/", logica_profesionalSalud.vista_agregar_adenda, name="profesionalSalud_agregar_adenda"),
 
     path("pagina_error/", logica.vista_error, name="pagina_error")
 ]
