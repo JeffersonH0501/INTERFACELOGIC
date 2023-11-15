@@ -262,11 +262,11 @@
   <script>
 
     function seleccionarPaciente(documento) {
-      documento_paciente = documento;
+      window.documento_paciente = documento; 
     }
   
     function consultarHistoriaClinica() {
-      if (documentoPaciente !== '0000000000') {
+      if (window.documento_paciente !== '0000000000') {
         window.location.href = "{% url 'profesionalSalud_consultar_historia' documento=documento documento_paciente=documento_paciente %}";
       }
     }
