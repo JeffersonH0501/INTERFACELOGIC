@@ -268,7 +268,7 @@
   
     function consultarHistoriaClinica() {
       if (documentoPaciente !== null) {
-        window.location.href = "{% url 'profesionalSalud_consultar_historia' documento=documento&documento_paciente=documentoPaciente %}";
+        window.location.href = "{% url 'profesionalSalud_consultar_historia' documento=documento documento_paciente=documentoPaciente %}";
       }
     }
 
