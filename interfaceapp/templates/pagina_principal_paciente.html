@@ -52,34 +52,34 @@
       text-align: center;
     }
 
-    .foto_profesional img {
+    .foto_paciente img {
       width: 250px;
       height: 250px;
       border-radius: 50%;
       object-fit: cover;
     }
 
-    .nombre_profesional {
+    .nombre_paciente {
       margin: 26px;
     }
 
-    .nombre_profesional h3 {
+    .nombre_paciente h3 {
       font-family: Poppins-Bold;
       color: rgb(245, 245, 245);
     }
 
-    .datos_profesional {
+    .datos_paciente {
       text-align: left;
       padding-left: 40px;
     }
     
-    .datos_profesional div span:first-child {
+    .datos_paciente div span:first-child {
       color: rgb(204, 204, 204);
       font-weight: bold;
       font-family: Poppins-Medium;
     }
 
-    .datos_profesional div span:nth-child(2) {
+    .datos_paciente div span:nth-child(2) {
       color: rgb(245, 245, 245);
       font-family: Poppins-Medium;
     }
@@ -151,15 +151,15 @@
 
     <div class="primer_contenedor">
 
-      <div class="foto_profesional">
+      <div class="foto_paciente">
         <img src="{{ foto }}" alt="usuario">
       </div>
 
-      <div class="nombre_profesional">
+      <div class="nombre_paciente">
         <h3>{{ nombre }}</h3>
       </div>
 
-      <div class="datos_profesional">
+      <div class="datos_paciente">
 
         <div>
           <span>Documento:</span>
@@ -203,7 +203,7 @@
 
   <script>
     function consultarHistoriaClinica() {
-      window.location.href = "{% url 'historia_clinica' documento=documento %}";
+      window.location.href = "{% url 'historia_clinica' %}";
     }
   </script>
     

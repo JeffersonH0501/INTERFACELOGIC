@@ -100,43 +100,9 @@
       font-size: 27px;
     }
 
-    .contenedor-pacientes {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-      padding-left: 30px;
-      padding-right: 30px;
-      margin-bottom: 40px;
-    }
-
-    .paciente {
-      text-align: center;
-      border: 1px solid #ddd; /* Agrega un borde */
-      border-radius: 10px; /* Ajusta el radio del borde según sea necesario */
-      overflow: hidden; /* Asegura que las esquinas sean semirredondas */
-    }
-
-    .paciente:hover {
-      cursor: pointer;
-    }
-
-    .paciente.seleccionado {
-      border: 2px solid #5e9fd5; /* Cambia el borde cuando el paciente está seleccionado */
-    }
-
-    .paciente p {
-      margin-top: 12px;
-    }
-
-    .paciente img {
-      max-width: 100%;
-      height: auto;
-      border-bottom-left-radius: 0; /* Ajusta el radio inferior del borde de la imagen */
-      border-bottom-right-radius: 0; /* Ajusta el radio inferior del borde de la imagen */
-    }
-
     .contenedor-botones {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       margin-bottom: 10px;
     }
@@ -225,15 +191,6 @@
         <span>Pacientes</span>
       </div>
 
-      <div class="contenedor-pacientes">
-        {% for paciente in pacientes %}
-          <div class="paciente" onclick="seleccionarPaciente('{{ paciente.documento }}')">
-            <img src="{{ paciente.foto }}" alt="Foto de {{ paciente.nombre }}">
-            <p>{{ paciente.nombre }}</p>
-          </div>
-        {% endfor %}
-      </div>
-
       <div class="titulo">
         <span>Opciones</span>
       </div>
@@ -260,30 +217,12 @@
   </footer>
 
   <script>
-
-    function seleccionarPaciente(documento) {
-
-      fetch("{% url 'actualizar_documento_paciente' %}", {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': '{{ csrf_token }}',
-          },
-          body: JSON.stringify({documento_paciente: documento}),
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log(data);
-      });
-
-      alert(documento)
-    }
-  
     function consultarHistoriaClinica() {
       window.location.href = "{% url 'profesionalSalud_consultar_historia' %}";
     }
 
     function agregarAdenda() {
+      window.location.href = "{% url 'profesionalSalud_consultar_historia' %}";
     }
   </script>
   

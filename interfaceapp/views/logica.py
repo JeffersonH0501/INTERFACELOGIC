@@ -25,13 +25,15 @@ def vista_login(request):
                     tipo = respuestaHttp.json().get("tipo")
                     
                     if respuesta == "valido":
+                         
+                        request.session["usuario"]["documento"] = documento
 
                         if tipo == "paciente":
-                            nueva_url = reverse("principal_paciente", args=[documento])
+                            nueva_url = reverse("paciente")
                         elif tipo == "profesionalSalud":
-                            nueva_url = reverse("principal_profesionalSalud", args=[documento])
+                            nueva_url = reverse("profesionalSalud")
                         elif tipo == "director":
-                            nueva_url = reverse("principal_director", args=[documento])
+                            nueva_url = reverse("director")
 
                         return redirect(nueva_url)
 

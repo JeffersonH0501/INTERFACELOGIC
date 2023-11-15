@@ -5,7 +5,9 @@ from django import forms
 from datetime import datetime
 from django.http import JsonResponse
 
-def vista_principal_profesionalSalud(request, documento):
+def vista_principal_profesionalSalud(request):
+
+    documento = request.session.get("usuario").get("documento")
 
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento})
@@ -22,13 +24,8 @@ def vista_principal_profesionalSalud(request, documento):
                 "nombre": usuarioJson.get("nombre"),
                 "edad": usuarioJson.get("edad"),
                 "telefono": usuarioJson.get("telefono"),
-                "sexo": usuarioJson.get("sexo"),
-                "pacientes": [],
+                "sexo": usuarioJson.get("sexo")
             }
-
-            for i in range(8):
-                nombre = "Jefferson Alberto Hernandez" + str(i)
-                usuario["pacientes"].append({"foto":"https://i.ibb.co/cb8X16x/didier.png","nombre":nombre, "documento": "0987654321"})
 
             request.session["usuario"] = usuario
 
@@ -45,7 +42,7 @@ def vista_principal_profesionalSalud(request, documento):
         
     return redirect(reverse("pagina_error"))
 
-def vista_agregar_adenda(request, documento):
+def vista_agregar_adenda(request):
 
     usuario = request.session.get("usuario")
 
@@ -91,16 +88,6 @@ def vista_agregar_adenda(request, documento):
             request.session["mensaje_error"] = f"Error al cargar la pagina ya que el {usuario['documento']} no corresponde a un profesional de salud"
 
     return redirect(reverse("pagina_error"))
-    
-def actualizar_documento_paciente(request):
-    try:
-        print(request.POST)
-        documento_paciente = request.POST.get('documento_paciente')
-        print(documento_paciente)
-        request.session['documento_paciente'] = documento_paciente
-        return JsonResponse({'status': 'success'})
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)})
 
 def vista_principal_profesionalSalud2(request):
 

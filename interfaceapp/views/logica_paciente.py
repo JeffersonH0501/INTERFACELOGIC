@@ -2,7 +2,9 @@ import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-def vista_principal_paciente(request, documento):
+def vista_principal_paciente(request):
+
+    documento = request.session.get("usuario").get("documento")
 
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento})
@@ -47,7 +49,7 @@ def vista_principal_paciente(request, documento):
         
     return redirect(reverse("pagina_error"))
 
-def vista_historia_clinica(request, documento):
+def vista_historia_clinica(request):
 
     usuario = request.session.get("usuario")
 
