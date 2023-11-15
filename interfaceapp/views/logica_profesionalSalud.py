@@ -92,9 +92,15 @@ def vista_agregar_adenda(request, documento):
     return redirect(reverse("pagina_error"))
     
 def actualizar_documento_paciente(request):
-    if request.method == 'POST' and request.is_ajax():
-        documento_paciente = request.POST.get('documento_paciente')
-        request.session['documento_paciente'] = documento_paciente
+    try:
+        if request.method == 'POST' and request.is_ajax():
+            documento_paciente = request.POST.get('documento_paciente')
+            request.session['documento_paciente'] = documento_paciente
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid request method or not an AJAX request'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
 
 def vista_principal_profesionalSalud2(request):
 
