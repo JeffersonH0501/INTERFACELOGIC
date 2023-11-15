@@ -95,6 +95,7 @@ def vista_agregar_adenda(request, documento):
 def actualizar_documento_paciente(request):
     try:
         documento_paciente = request.POST.get('documento_paciente')
+        print(documento_paciente)
         request.session['documento_paciente'] = documento_paciente
         return JsonResponse({'status': 'success'})
     except Exception as e:
