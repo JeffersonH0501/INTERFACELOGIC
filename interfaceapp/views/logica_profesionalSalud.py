@@ -89,11 +89,11 @@ def vista_agregar_adenda(request):
 
     return redirect(reverse("pagina_error"))
 
-def vista_principal_profesionalSalud2(request):
+def vista_consultar_historia(request):
 
-    mensaje_error =  request.session.get("documento_paciente")
-
-    return render(request, 'pagina_error.html', {"error_message": mensaje_error})
+    usuario = request.session.get("usuario")
+    
+    return render(request, 'pagina_consultar_historia.html', usuario)
 
 class AdendaForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
