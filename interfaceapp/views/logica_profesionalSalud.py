@@ -96,7 +96,7 @@ def vista_consultar_historia(request):
 
     if request.method == "POST":
 
-        form = AdendaForm(request.POST)
+        form = DocumentoForm(request.POST)
         contexto = usuario.copy()
 
         if form.is_valid():

@@ -287,7 +287,7 @@
 
       </div>
 
-      <button class="boton_regresar" type="submit" onclick="paginaPrincipalProfesionalSalud('{{ documento }}')">
+      <button class="boton_regresar" type="submit" onclick="paginaPrincipalProfesionalSalud()">
         Regresar
       </button>
 
@@ -299,7 +299,7 @@
         <span>Consultar Historia Clínica</span>
       </div>
 
-      <form action="{% url 'profesionalSalud_agregar_adenda' %}" method="post">
+      <form action="{% url 'profesionalSalud_consultar_historia' %}" method="post">
 
         <div class="consulta">
             {% csrf_token %}
