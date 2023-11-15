@@ -95,7 +95,7 @@ def vista_agregar_adenda(request, documento):
 
 def vista_principal_profesionalSalud2(request, documento, documento_paciente):
     
-    request.session["mensaje_error"] = "CULE MONDA"
+    request.session["mensaje_error"] = "CULE MONDA" + documento + ", " + documento_paciente
 
     return redirect(reverse("pagina_error"))
 
