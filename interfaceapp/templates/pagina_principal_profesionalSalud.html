@@ -240,7 +240,7 @@
 
       <div class="contenedor-botones">
 
-        <button class="boton" type="button" onclick="consultarHistoriaClinica()">
+        <button class="boton" type="button" onclick="consultarHistoriaClinica('{{ documento }}')">
           Consultar Historia Clínica
         </button>
   
@@ -267,14 +267,8 @@
       documento_paciente = documento; 
     }
   
-    function consultarHistoriaClinica() {
-      if (documento_paciente !== '0000000000') {
-        var url = "{% url 'profesionalSalud_consultar_historia' %}";
-        url = url.replace("documento_paciente_placeholder", documento_paciente);
-        url = url.replace("documento_placeholder", documento);
-
-        window.location.href = url;
-      }
+    function consultarHistoriaClinica(documento) {
+      window.location.href = "{% url 'profesionalSalud_consultar_historia' %}?documento=" + documento + "&documento_paciente=" + documento_paciente;;
     }
 
     function agregarAdenda() {
