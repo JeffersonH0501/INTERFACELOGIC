@@ -262,7 +262,6 @@
   <script>
 
     function seleccionarPaciente(documento) {
-      usuario.documento_paciente = documento;
 
       fetch("{% url 'actualizar_documento_paciente' %}", {
           method: 'POST',
