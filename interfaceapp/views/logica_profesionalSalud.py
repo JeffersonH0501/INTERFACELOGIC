@@ -94,6 +94,7 @@ def vista_agregar_adenda(request, documento):
     
 def actualizar_documento_paciente(request):
     try:
+        print(request.POST)
         documento_paciente = request.POST.get('documento_paciente')
         print(documento_paciente)
         request.session['documento_paciente'] = documento_paciente
