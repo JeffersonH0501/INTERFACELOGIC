@@ -261,13 +261,19 @@
 
   <script>
 
+    var documento_paciente = null;
+
     function seleccionarPaciente(documento) {
-      window.documento_paciente = documento; 
+      documento_paciente = documento; 
     }
   
     function consultarHistoriaClinica() {
       if (documento_paciente !== '0000000000') {
-        window.location.href = "{% url 'profesionalSalud_consultar_historia' documento=documento documento_paciente=documento_paciente %}";
+        var url = "{% url 'profesionalSalud_consultar_historia' %}";
+        url = url.replace("documento_paciente_placeholder", documento_paciente);
+        url = url.replace("documento_placeholder", documento);
+
+        window.location.href = url;
       }
     }
 
