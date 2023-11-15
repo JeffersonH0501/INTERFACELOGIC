@@ -100,6 +100,25 @@
       font-size: 27px;
     }
 
+    .consulta {
+        display: flex;
+        align-items: center;
+    }
+
+    .input {
+      font-family: Poppins-Medium;
+      font-size: 15px;
+      color: #666666;
+      width: 80%;
+      background: #e6e6e6;
+      height: 50px;
+      border-radius: 25px;
+      padding: 0 30px 0 30px;
+      margin: 5px;
+      outline: none;
+	    border: none;
+    }
+
     .datos {
         display: flex;
         margin: 5px;
@@ -246,49 +265,54 @@
 
       <form action="{% url 'profesionalSalud_agregar_adenda' %}" method="post">
 
-        {% csrf_token %}
-
-        <input class="input" type="text" name="documento_paciente" placeholder="Documento Paciente">
+        <div class="consulta">
+            {% csrf_token %}
+            <input class="input" type="text" name="documento_paciente" placeholder="Documento Paciente">
+    
+            <button class="boton" type="submit">
+                Consultar
+            </button>
+        </div>
 
         {% if mensaje %}
         <div class="div_mensaje" id="mensaje">{{ mensaje }}</div>
         {% endif %}
 
-        <div class="informacion">
-            <div class="datos">
+      </form>
+
+      <div class="informacion">
+        <div class="datos">
+            <div class="datos_edad">
                 <span>Edad</span>
                 <h6>19</h6>
+            </div>
+            <div class="datos_genero">
                 <span>Genero</span>
                 <h6>Masculino</h6>
             </div>
-            <span>Diagnosticos</span>
-            <h6>diagnosticos</h6>
-            <span>Tratamiento</span>
-            <h6>tratamiento</h6>
-            <span>Notas</span>
-            <h6>notas</h6>
-            <span>Adendas</span>
-            <table class="adendas">
-              <tr>
-                <th style="width: 20%;">Fecha</th>
-                <th style="width: 20%;">Tipo</th>
-                <th style="width: 60%;">Descripción</th>
-              </tr>
-              {% for adenda in adendas %}
-              <tr>
-                <td>{{ adenda.fecha }}</td>
-                <td>{{ adenda.tipo }}</td>
-                <td>{{ adenda.descripcion }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-          </div>
-
-        <button class="boton" type="submit">
-          Guardar
-        </button>
-
-      </form>
+        </div>
+        <span>Diagnosticos</span>
+        <h6>diagnosticos</h6>
+        <span>Tratamiento</span>
+        <h6>tratamiento</h6>
+        <span>Notas</span>
+        <h6>notas</h6>
+        <span>Adendas</span>
+        <table class="adendas">
+          <tr>
+            <th style="width: 20%;">Fecha</th>
+            <th style="width: 20%;">Tipo</th>
+            <th style="width: 60%;">Descripción</th>
+          </tr>
+          {% for adenda in adendas %}
+          <tr>
+            <td>{{ adenda.fecha }}</td>
+            <td>{{ adenda.tipo }}</td>
+            <td>{{ adenda.descripcion }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
 
     </div>
 
