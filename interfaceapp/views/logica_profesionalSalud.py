@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 def vista_principal_profesionalSalud(request):
 
-    documento = request.session.get.get("documento")
+    documento = request.session.get("documento")
 
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento})
