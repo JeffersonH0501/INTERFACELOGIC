@@ -261,14 +261,12 @@
 
   <script>
 
-    var documento_paciente = null;
-
     function seleccionarPaciente(documento) {
       documento_paciente = documento; 
     }
   
     function consultarHistoriaClinica(documento) {
-      window.location.href = "{% url 'profesionalSalud_consultar_historia' %}?documento=" + documento + "&documento_paciente=" + documento_paciente;;
+      window.location.href = "{% url 'profesionalSalud_consultar_historia' %}";
     }
 
     function agregarAdenda() {

@@ -94,14 +94,12 @@ def vista_agregar_adenda(request, documento):
     
 
 def vista_principal_profesionalSalud2(request):
-    documento = request.GET.get('documento')
-    documento_paciente = request.GET.get('documento_paciente')
 
-    request.session["mensaje_error"] = "CULE MONDA"
+    usuario = request.session.get("usuario")
 
-    contexto = {"mensaje_error": documento+""+documento_paciente}
-    
-    return render(request, 'pagina_error.html', contexto)
+    mensaje_error = usuario["documento_paciente"]
+
+    return render(request, 'pagina_error.html', {"error_message": mensaje_error})
 
 class AdendaForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
