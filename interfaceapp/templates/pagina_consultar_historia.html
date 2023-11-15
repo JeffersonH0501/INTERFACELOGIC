@@ -88,6 +88,12 @@
       flex: 7;
       padding: 30px;
       text-align: center;
+    }
+
+    .segundo_contenedor {
+      flex: 7;
+      padding: 30px;
+      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -128,6 +134,12 @@
 	    border: none;
     }
 
+    .datos_paciente_contenedor {
+      text-align: left; /* Ajusta según tus necesidades */
+      max-width: 600px; /* Ajusta según tus necesidades */
+      margin: 0 auto;
+    }
+
     .datos {
       display: flex;
     }
@@ -166,8 +178,7 @@
       height: 230px;
       border-radius: 50%;
       object-fit: cover;
-      margin-left: auto;
-      margin-right: auto;
+      margin-left: 10px;
     }
 
     .informacion {
@@ -354,7 +365,7 @@
       </form>
 
       {% if paciente %}
-      <div class="informacion">
+      <div class="informacion datos_paciente_contenedor">
         <div class="datos_foto">
           <img src="{{ paciente.foto }}" atl="foto_paciente">
         </div>
@@ -372,6 +383,8 @@
               <h6>{{ paciente.sexo }}</h6>
             </div>
         </div>
+      </div>
+      <div class="informacion">
         <span>Diagnosticos</span>
         <h6> {{ paciente.historia_clinica.diagnosticos }} </h6>
         <span>Tratamiento</span>
