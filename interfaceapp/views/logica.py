@@ -34,6 +34,9 @@ def vista_login(request):
                         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
                         tipo = decoded_token.get("tipo")
 
+                        print(token)
+                        print(decoded_token)
+
                         if tipo == "paciente":
                             nueva_url = reverse("paciente")
                         elif tipo == "profesionalSalud":
