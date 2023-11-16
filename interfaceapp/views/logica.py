@@ -1,3 +1,5 @@
+import jwt
+from django.conf import settings
 import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -8,7 +10,7 @@ def vista_login(request):
     if request.method == "POST":
 
         form = LoginForm(request.POST)
-        mensaje_error = ''
+        mensaje_error = ""
 
         if form.is_valid():
 
@@ -22,11 +24,15 @@ def vista_login(request):
                 if respuestaHttp.status_code == 200:
 
                     respuesta = respuestaHttp.json().get("respuesta")
-                    tipo = respuestaHttp.json().get("tipo")
+                    token = respuestaHttp.json().get("token")
                     
                     if respuesta == "valido":
                          
                         request.session["documento"] = documento
+                        request.session["token"] = token
+
+                        decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+                        tipo = decoded_token.get("tipo")
 
                         if tipo == "paciente":
                             nueva_url = reverse("paciente")
@@ -40,12 +46,12 @@ def vista_login(request):
                     elif respuesta == "invalido":
                         mensaje_error = "Documento/Clave incorrecto"
                 else:
-                    mensaje_error = "Error en la solicitud al servidor de autenticación"
+                    mensaje_error = f"Error {respuestaHttp.status_code} en la solicitud al servidor de autenticación"
                 
             except requests.exceptions.RequestException as e:
                 mensaje_error = "Error de conexión con el servidor de autenticación"
             
-        return render(request, "pagina_login.html", {"error_message": mensaje_error} )
+        return render(request, "pagina_login.html", {"error_message": mensaje_error})
     else:
         return render(request, "pagina_login.html")
     
