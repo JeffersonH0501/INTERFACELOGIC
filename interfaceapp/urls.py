@@ -18,4 +18,3 @@ urlpatterns = [
 
     path("pagina_error/", logica.vista_error, name="pagina_error")
 ]
-

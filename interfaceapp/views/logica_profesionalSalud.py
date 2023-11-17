@@ -128,46 +128,49 @@ def consultarHistoriaPaciente(request, documento_profesional):
 
             if respuestaHttp.status_code == 200:
 
-                pacienteJson = respuestaHttp.json()
+                respuestaJson = respuestaHttp.json()
 
-                if pacienteJson.get("mensaje") is None:
+                if respuestaJson.get("mensaje") is None:
 
                     paciente = {
-                        "documento": pacienteJson.get("documento"),
-                        "foto": pacienteJson.get("foto"),
-                        "nombre": pacienteJson.get("nombre"),
-                        "edad": pacienteJson.get("edad"),
-                        "telefono": pacienteJson.get("telefono"),
-                        "sexo": pacienteJson.get("sexo")
+                        "documento": respuestaJson.get("documento"),
+                        "foto": respuestaJson.get("foto"),
+                        "nombre": respuestaJson.get("nombre"),
+                        "edad": respuestaJson.get("edad"),
+                        "telefono": respuestaJson.get("telefono"),
+                        "sexo": respuestaJson.get("sexo")
                     }
 
                     respuestaHttp = request.post("http://10.128.0.8:8000/historia_clinica/", json={"documento_paciente": documento_paciente, "documento_profesional": documento_profesional})
 
                     if respuestaHttp.status_code == 200:
-
-                        llaveJson = respuestaHttp.json().get("llave_codificada")
-                        historiaJson = respuestaHttp.json().get("historia_codificada")
-
-                        llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
-                        historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
-
-                        historia = {
-                            "diagnosticos": historia_decodificada.get("diagnosticos"),
-                            "tratamientos": historia_decodificada.get("tratamientos"),
-                            "notas": historia_decodificada.get("notas"),
-                            "adendas": []
-                        }
-                        for adenda in historia_decodificada.get("adendas"):
-                            historia["adendas"].append(adenda)
                         
-                        request.session["paciente"] = paciente
-                        request.session["paciente"]["historia_clinica"] = historia
-                    
+                        respuestaJson = respuestaHttp.json()
+
+                        if respuestaJson.get("mensaje") is None:
+
+                            llaveJson = respuestaHttp.json().get("llave_codificada")
+                            historiaJson = respuestaHttp.json().get("historia_codificada")
+
+                            llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+                            historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
+
+                            historia = {
+                                "diagnosticos": historia_decodificada.get("diagnosticos"),
+                                "tratamientos": historia_decodificada.get("tratamientos"),
+                                "notas": historia_decodificada.get("notas"),
+                                "adendas": []
+                            }
+                            for adenda in historia_decodificada.get("adendas"):
+                                historia["adendas"].append(adenda)
+                            
+                            request.session["paciente"] = paciente
+                            request.session["paciente"]["historia_clinica"] = historia
+
+                        elif respuestaJson.get("mensaje") == "true":
+                            request.session["mensaje_rojo"] = "Error de autorización el paciente no le pertence"
                     else:
                         request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
-                
-                elif pacienteJson.get("mensaje") == "true":
-                    request.session["mensaje_rojo"] = "Error de autorización el paciente no le pertenece"
                 else:
                     request.session["mensaje_rojo"] = "Error al cargar la pagina ya que el paciente no existe"
             else:
