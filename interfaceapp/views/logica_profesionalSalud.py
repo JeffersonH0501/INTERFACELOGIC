@@ -9,6 +9,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 from datetime import datetime
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+from base64 import urlsafe_b64encode, urlsafe_b64decode
 
 def enviarNotificacionManipulacion():
     try:
@@ -25,8 +28,21 @@ def enviarNotificacionManipulacion():
         
         servidor_correo.quit()
 
-    except Exception as e:
-        print(f"Error al enviar la notificación: {str(e)}")
+    except Exception as e:print(f"Error al enviar la notificación: {str(e)}")
+
+
+def decodificarMensaje(mensaje_codificado, llave):
+
+    ciphertext = urlsafe_b64decode(mensaje_codificado.encode())
+
+    backend = default_backend()
+    cipher = Cipher(algorithms.AES(llave), modes.CFB, backend=backend)
+    decryptor = cipher.decryptor()
+
+    decrypted_message = decryptor.update(ciphertext) + decryptor.finalize()
+
+    return decrypted_message.decode()
+
 
 def consultarUsuarioProfesional(request, documento):
 
@@ -108,7 +124,7 @@ def consultarHistoriaPaciente(request, documento_profesional):
         documento_paciente = form.cleaned_data["documento_paciente"]
 
         try:
-            respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento_paciente": documento_paciente, "documento_profesional": documento_profesional})
+            respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento_paciente": documento_paciente})
 
             if respuestaHttp.status_code == 200:
 
@@ -125,18 +141,23 @@ def consultarHistoriaPaciente(request, documento_profesional):
                         "sexo": pacienteJson.get("sexo")
                     }
 
-                    respuestaHttp = request.post("http://10.128.0.8:8000/historia_clinica/", json={"documento": documento_paciente})
+                    respuestaHttp = request.post("http://10.128.0.8:8000/historia_clinica/", json={"documento_paciente": documento_paciente, "documento_profesional": documento_profesional})
 
                     if respuestaHttp.status_code == 200:
 
-                        historiaJson = respuestaHttp.json()
+                        llaveJson = respuestaHttp.json().get("llave_codificada")
+                        historiaJson = respuestaHttp.json().get("historia_codificada")
+
+                        llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+                        historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
+
                         historia = {
-                            "diagnosticos": historiaJson.get("diagnosticos"),
-                            "tratamientos": historiaJson.get("tratamientos"),
-                            "notas": historiaJson.get("notas"),
+                            "diagnosticos": historia_decodificada.get("diagnosticos"),
+                            "tratamientos": historia_decodificada.get("tratamientos"),
+                            "notas": historia_decodificada.get("notas"),
                             "adendas": []
                         }
-                        for adenda in historiaJson.get("adendas"):
+                        for adenda in historia_decodificada.get("adendas"):
                             historia["adendas"].append(adenda)
                         
                         request.session["paciente"] = paciente

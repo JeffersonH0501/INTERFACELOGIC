@@ -3,6 +3,22 @@ import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+from base64 import urlsafe_b64encode, urlsafe_b64decode
+
+def decodificarMensaje(mensaje_codificado, llave):
+
+    ciphertext = urlsafe_b64decode(mensaje_codificado.encode())
+
+    backend = default_backend()
+    cipher = Cipher(algorithms.AES(llave), modes.CFB, backend=backend)
+    decryptor = cipher.decryptor()
+
+    decrypted_message = decryptor.update(ciphertext) + decryptor.finalize()
+
+    return decrypted_message.decode()
+
 
 def consultarUsuarioPaciente(request, documento):
 
@@ -23,7 +39,6 @@ def consultarUsuarioPaciente(request, documento):
             }
 
             request.session["usuario"] = usuario
-
         else:
             request.session["mensaje_error"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
         
@@ -38,20 +53,23 @@ def consultarHistoriaPaciente(request, documento):
 
         if respuestaHttp.status_code == 200:
 
-            historiaJson = respuestaHttp.json()
+            llaveJson = respuestaHttp.json().get("llave_codificada")
+            historiaJson = respuestaHttp.json().get("historia_codificada")
+
+            llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+            historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
 
             historia = {
-                "diagnosticos": historiaJson.get("diagnosticos"),
-                "tratamientos": historiaJson.get("tratamientos"),
-                "notas": historiaJson.get("notas"),
+                "diagnosticos": historia_decodificada.get("diagnosticos"),
+                "tratamientos": historia_decodificada.get("tratamientos"),
+                "notas": historia_decodificada.get("notas"),
                 "adendas": []
             }
 
-            for adenda in historiaJson.get("adendas"):
+            for adenda in historia_decodificada.get("adendas"):
                 historia["adendas"].append(adenda)
 
             request.session["usuario"]["historia_clinica"] = historia
-        
         else:
             request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
     
