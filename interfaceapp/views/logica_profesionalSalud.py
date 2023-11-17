@@ -91,7 +91,7 @@ def agregarAdendaPaciente(request, documento_profesional):
         informacion_adenda["firma"] = firma
 
         try:
-            respuestaHttp = requests.post("http://10.128.0.8:8000/agregarAdenda/", json=informacion_adenda)
+            respuestaHttp = requests.post("http://10.128.0.8:8000/agregar_adenda/", json=informacion_adenda)
 
             if respuestaHttp.status_code == 200:
 
@@ -124,7 +124,7 @@ def consultarHistoriaPaciente(request, documento_profesional):
         documento_paciente = form.cleaned_data["documento_paciente"]
 
         try:
-            respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento_paciente": documento_paciente})
+            respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento_paciente})
 
             if respuestaHttp.status_code == 200:
 

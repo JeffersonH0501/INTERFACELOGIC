@@ -27,15 +27,15 @@ def consultarUsuarioPaciente(request, documento):
 
         if respuestaHttp.status_code == 200:
 
-            usuarioJson = respuestaHttp.json()
+            respuestaJson = respuestaHttp.json()
 
             usuario = {
-                "documento": usuarioJson.get("documento"),
-                "foto": usuarioJson.get("foto"),
-                "nombre": usuarioJson.get("nombre"),
-                "edad": usuarioJson.get("edad"),
-                "telefono": usuarioJson.get("telefono"),
-                "sexo": usuarioJson.get("sexo")
+                "documento": respuestaJson.get("documento"),
+                "foto": respuestaJson.get("foto"),
+                "nombre": respuestaJson.get("nombre"),
+                "edad": respuestaJson.get("edad"),
+                "telefono": respuestaJson.get("telefono"),
+                "sexo": respuestaJson.get("sexo")
             }
 
             request.session["usuario"] = usuario
