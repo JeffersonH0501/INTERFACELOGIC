@@ -23,19 +23,14 @@ def vista_login(request):
 
                 if respuestaHttp.status_code == 200:
 
-                    respuesta = respuestaHttp.json().get("respuesta")
                     token = respuestaHttp.json().get("token")
                     
-                    if respuesta == "valido":
+                    if token is not None:
                          
-                        request.session["documento"] = documento
                         request.session["token"] = token
 
                         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
                         tipo = decoded_token.get("tipo")
-
-                        print(token)
-                        print(decoded_token)
 
                         if tipo == "paciente":
                             nueva_url = reverse("paciente")
@@ -46,7 +41,7 @@ def vista_login(request):
 
                         return redirect(nueva_url)
 
-                    elif respuesta == "invalido":
+                    else:
                         mensaje_error = "Documento/Clave incorrecto"
                 else:
                     mensaje_error = f"Error {respuestaHttp.status_code} en la solicitud al servidor de autenticación"
@@ -60,6 +55,7 @@ def vista_login(request):
     
 def vista_error(request):
     mensaje_error = request.session.get("mensaje_error")
+    request.session.pop("mensaje_error", None)
     return render(request, "pagina_error.html", {"error_message": mensaje_error})
 
 class LoginForm(forms.Form):

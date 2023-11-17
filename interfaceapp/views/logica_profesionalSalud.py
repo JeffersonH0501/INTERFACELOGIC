@@ -1,25 +1,22 @@
+import jwt
 import requests
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 from datetime import datetime
-from django.http import JsonResponse
 
-def vista_principal_profesionalSalud(request):
-
-    documento = request.session.get("documento")
+def consultarUsuarioProfesional(request, documento):
 
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento})
-
+        
         if respuestaHttp.status_code == 200:
-
+            
             usuarioJson = respuestaHttp.json()
 
             usuario = {
                 "documento": usuarioJson.get("documento"),
-                "clave": usuarioJson.get("clave"),
-                "tipo": usuarioJson.get("tipo"),
                 "foto": usuarioJson.get("foto"),
                 "nombre": usuarioJson.get("nombre"),
                 "edad": usuarioJson.get("edad"),
@@ -29,125 +26,216 @@ def vista_principal_profesionalSalud(request):
 
             request.session["usuario"] = usuario
 
-            if usuario["tipo"] == "profesionalSalud":
-                return render(request, "pagina_principal_profesionalSalud.html", usuario)
-            else:
-                request.session["mensaje_error"] = f"Error al cargar la pagina ya que el {documento}  no corresponde a un profesional de salud"
-
         else:
-            request.session["mensaje_error"] = f"Error ({respuestaHttp.status_code}) al cargar la página del profesional de salud"
+            request.session["mensaje_error"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
 
     except requests.exceptions.RequestException as e:
-        request.session["mensaje_error"] = "Error al cargar la pagina del profesional de salud"
-        
-    return redirect(reverse("pagina_error"))
+        request.session["mensaje_error"] = "Error de conexión con el servidor de usuarios"
 
-def vista_agregar_adenda(request):
 
-    usuario = request.session.get("usuario")
+def agregarAdendaPaciente(request, documento_profesional):
 
-    if request.method == "POST":
+    form = AdendaForm(request.POST)
 
-        form = AdendaForm(request.POST)
-        contexto = usuario.copy()
+    if form.is_valid():
 
-        if form.is_valid():
+        documento_paciente = form.cleaned_data["documento_paciente"]
+        fecha = datetime.now()
+        fecha = fecha.strftime("%d-%m-%Y")
+        tipo = form.cleaned_data["tipo"]
+        descripcion = form.cleaned_data["descripcion"]
 
-            documento_paciente = form.cleaned_data["documento_paciente"]
-            fecha = datetime.now()
-            fecha = fecha.strftime("%d-%m-%Y")
-            tipo = form.cleaned_data["tipo"]
-            descripcion = form.cleaned_data["descripcion"]
+        informacion_adenda = {"documento_paciente": documento_paciente, "documento_profesional": documento_profesional, "fecha": fecha, "tipo": tipo, "descripcion": descripcion}
 
-            informacion_adenda = {"documento_paciente": documento_paciente, "documento_profesional": usuario["documento"], "fecha": fecha, "tipo": tipo, "descripcion": descripcion}
+        try:
+            respuestaHttp = requests.post("http://10.128.0.8:8000/agregarAdenda/", json=informacion_adenda)
 
-            try:
-                respuestaHttp = requests.post("http://10.128.0.8:8000/agregarAdenda/", json=informacion_adenda)
+            if respuestaHttp.status_code == 200:
 
-                if respuestaHttp.status_code == 200:
+                respuesta = respuestaHttp.json().get("mensaje")
 
-                    adenda = respuestaHttp.json().get("adenda")
-
-                    if adenda == None:
-                        contexto["mensaje"] = "El paciente no existe/El paciente no le pertenece"
-                    else:
-                        contexto["mensaje"] = "Adenda agregada con exito"
+                if respuesta is None:
+                    request.session["mensaje_verde"] = "Adenda agregada con exito"
+                elif respuesta == "true":
+                    request.session["mensaje_rojo"] = "Error de autorización ya que el paciente no le pertenece"
+                elif respuesta == "false":
+                    request.session["mensaje_rojo"] = "Error al realizar la solicitud ya que el paciente no existe"
                 else:
-                    contexto["mensaje"] = "Error en la solicitud al servidor de usuarios"
+                    request.session["mensaje_rojo"] = "Error de integridad ya que hubo un intento externo de manipulación de la adenda"
+            else:
+                request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
                 
-            except requests.exceptions.RequestException as e:
-                contexto["mensaje"] = "Error de conexión con el servidor de usuarios"
-
-        return render(request, "pagina_agregar_adenda.html", contexto)
-
+        except requests.exceptions.RequestException as e:
+            request.session["mensaje_rojo"] = "Error de conexión con el servidor de usuarios"
     else:
+        request.session["mensaje_rojo"] = "El form no es valido"
 
-        if usuario["tipo"] == "profesionalSalud":
-            return render(request, "pagina_agregar_adenda.html", usuario)
-        else:
-            request.session["mensaje_error"] = f"Error al cargar la pagina ya que el {usuario['documento']} no corresponde a un profesional de salud"
 
-    return redirect(reverse("pagina_error"))
+def consultarHistoriaPaciente(request, documento_profesional):
 
-def vista_consultar_historia(request):
+    form = DocumentoForm(request.POST)
 
-    usuario = request.session.get("usuario")
-    contexto = usuario.copy()
+    if form.is_valid():
 
-    if request.method == "POST":
+        documento_paciente = form.cleaned_data["documento_paciente"]
 
-        form = DocumentoForm(request.POST)
-        contexto = usuario.copy()
+        try:
+            respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento_paciente": documento_paciente, "documento_profesional": documento_profesional})
 
-        if form.is_valid():
+            if respuestaHttp.status_code == 200:
 
-            documento_paciente = form.cleaned_data["documento_paciente"]
-            
-            try:
-                respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento_paciente})
+                pacienteJson = respuestaHttp.json()
 
-                if respuestaHttp.status_code == 200:
-
-                    pacienteJson = respuestaHttp.json()
+                if pacienteJson.get("mensaje") is None:
 
                     paciente = {
                         "documento": pacienteJson.get("documento"),
-                        "clave": pacienteJson.get("clave"),
-                        "tipo": pacienteJson.get("tipo"),
                         "foto": pacienteJson.get("foto"),
                         "nombre": pacienteJson.get("nombre"),
                         "edad": pacienteJson.get("edad"),
                         "telefono": pacienteJson.get("telefono"),
-                        "sexo": pacienteJson.get("sexo"),
-                        "historia_clinica": {
-                            'diagnosticos': pacienteJson.get('historia_clinica').get('diagnosticos'),
-                            'tratamientos': pacienteJson.get('historia_clinica').get('tratamientos'),
-                            'notas': pacienteJson.get('historia_clinica').get('notas')
-                        },
-                        "adendas": []
+                        "sexo": pacienteJson.get("sexo")
                     }
 
-                    for adenda in pacienteJson.get("adendas"):
-                        usuario["adendas"].append(adenda)
+                    respuestaHttp = request.post("http://10.128.0.8:8000/historia_clinica/", json={"documento": documento_paciente})
+
+                    if respuestaHttp.status_code == 200:
+
+                        historiaJson = respuestaHttp.json()
+                        historia = {
+                            "diagnosticos": historiaJson.get("diagnosticos"),
+                            "tratamientos": historiaJson.get("tratamientos"),
+                            "notas": historiaJson.get("notas"),
+                            "adendas": []
+                        }
+                        for adenda in historiaJson.get("adendas"):
+                            historia["adendas"].append(adenda)
+                        
+                        request.session["paciente"] = paciente
+                        request.session["paciente"]["historia_clinica"] = historia
                     
-                    contexto["paciente"] = paciente
-
-                    return render(request, "pagina_consultar_historia.html", contexto)
-                else:
-                    contexto["mensaje"] = f"Error {respuestaHttp.status_code} al consultar usuario"
+                    else:
+                        request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
                 
-            except requests.exceptions.RequestException as e:
-                contexto["mensaje"] = "Error de conexión con el servidor de usuarios"
+                elif pacienteJson.get("mensaje") == "true":
+                    request.session["mensaje_rojo"] = "Error de autorización el paciente no le pertenece"
+                else:
+                    request.session["mensaje_rojo"] = "Error al cargar la pagina ya que el paciente no existe"
+            else:
+                request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
 
-        return render(request, "pagina_consultar_historia.html", contexto)
+        except requests.exceptions.RequestException as e:
+            request.session["mensaje_rojo"] = "Error de conexión con el servidor de usuarios"
     else:
+        request.session["mensaje_rojo"] = "El form no es valido"
 
-        if usuario["tipo"] == "profesionalSalud":
-            return render(request, "pagina_consultar_historia.html", usuario)
+
+def vista_principal_profesionalSalud(request):
+
+    token = request.session.get("token")
+
+    if token is not None:
+
+        decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+
+        documento = decoded_token.get("documento")
+        tipo = decoded_token.get("tipo")
+
+        if tipo == "profesionalSalud":
+
+            if request.session.get("usuario") is None:
+                consultarUsuarioProfesional(request)
+            
+            usuario = request.session.get("usuario")
+
+            if usuario is not None:
+                return render(request, "pagina_principal_profesionalSalud.html", usuario)
         else:
-            request.session["mensaje_error"] = f"Error al cargar la pagina ya que el {usuario['documento']} no corresponde a un profesional de salud"
+            request.session["mensaje_error"] = f"Error de autorización al cargar la pagina ya que el documento {documento} no corresponde a un profesional de salud"
+    else:
+        request.session["mensaje_error"] = "Error de autenticanción al cargar la pagina"
+    
+    return redirect(reverse("pagina_error"))
+
+
+def vista_agregar_adenda(request):
+
+    token = request.session.get("token")
+
+    if token is not None:
+
+        decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+
+        documento = decoded_token.get("documento")
+        tipo = decoded_token.get("tipo")
+
+        if tipo == "profesionalSalud":
+
+            usuario = request.session.get("usuario")
+
+            if request.method == "POST":
+
+                agregarAdendaPaciente(request, documento)
+
+                contexto = usuario.copy()
+                contexto["mensaje_verde"] = request.session.get("mensaje_verde")
+                contexto["mensaje_rojo"] = request.session.get("mensaje_rojo")
+
+                request.session.pop("mensaje_verde", None)
+                request.session.pop("mensaje_rojo", None)
+
+                return render(request, "pagina_agregar_adenda.html", contexto)
+
+            else:
+                return render(request, "pagina_agregar_adenda.html", usuario)
+        else:
+            request.session["mensaje_error"] = f"Error de autorización al cargar la pagina ya que el documento {documento} no corresponde a un profesional de salud"
+    else:
+        request.session["mensaje_error"] = "Error de autenticanción al cargar la pagina"
+    
+    return redirect(reverse("pagina_error"))
+
+
+def vista_consultar_historia(request):
+
+    token = request.session.get("token")
+
+    if token is not None:
+
+        decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+
+        documento = decoded_token.get("documento")
+        tipo = decoded_token.get("tipo")
+
+        if tipo == "profesionalSalud":
+
+            usuario = request.session.get("usuario")
+
+            if request.method == "POST":
+
+                consultarHistoriaPaciente(request, documento)
+
+                paciente = request.session.get("paciente")
+                contexto = usuario.copy()
+
+                if paciente is not None:
+                    contexto["paciente"] = paciente
+                    request.session.pop("paciente", None)
+                    return render(request, "pagina_consultar_historia.html", contexto)
+                
+                else:
+                    contexto["mensaje_rojo"] = request.session.get("mensaje_rojo")
+                    request.session.pop("mensaje_rojo", None)
+                    return render(request, "pagina_consultar_historia.html", contexto)
+            else:
+                return render(request, "pagina_consultar_historia.html", usuario)
+        else:
+            request.session["mensaje_error"] = f"Error de autorización al cargar la pagina ya que el documento {documento} no corresponde a un profesional de salud"       
+    else:
+        request.session["mensaje_error"] = "Error de autenticanción al cargar la pagina"
 
     return redirect(reverse("pagina_error"))
+     
 
 class AdendaForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
