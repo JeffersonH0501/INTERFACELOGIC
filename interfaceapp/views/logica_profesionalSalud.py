@@ -1,10 +1,32 @@
+import json
 import jwt
+import hashlib
+import smtplib
+from email.mime.text import MIMEText
 import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 from datetime import datetime
+
+def enviarNotificacionManipulacion():
+    try:
+        servidor_correo = smtplib.SMTP('tu_servidor_smtp', tu_puerto_smtp)
+        servidor_correo.starttls()
+        servidor_correo.login('tu_correo@gmail.com', 'tu_contraseña')
+
+        mensaje = MIMEText("Se ha detectado un intento de manipulación en la adenda.")
+        mensaje['Subject'] = 'Alerta de Manipulación de Adenda'
+        mensaje['From'] = 'tu_correo@gmail.com'
+        mensaje['To'] = 'correo_del_admin@tu_empresa.com'
+
+        servidor_correo.sendmail('tu_correo@gmail.com', ['correo_del_admin@tu_empresa.com'], mensaje.as_string())
+        
+        servidor_correo.quit()
+
+    except Exception as e:
+        print(f"Error al enviar la notificación: {str(e)}")
 
 def consultarUsuarioProfesional(request, documento):
 
@@ -46,6 +68,11 @@ def agregarAdendaPaciente(request, documento_profesional):
         descripcion = form.cleaned_data["descripcion"]
 
         informacion_adenda = {"documento_paciente": documento_paciente, "documento_profesional": documento_profesional, "fecha": fecha, "tipo": tipo, "descripcion": descripcion}
+        
+        informacion_firma = json.dumps(informacion_adenda, sort_keys=True)
+        firma = hashlib.sha256(informacion_firma.encode()).hexdigest()
+
+        informacion_adenda["firma"] = firma
 
         try:
             respuestaHttp = requests.post("http://10.128.0.8:8000/agregarAdenda/", json=informacion_adenda)
@@ -60,7 +87,8 @@ def agregarAdendaPaciente(request, documento_profesional):
                     request.session["mensaje_rojo"] = "Error de autorización ya que el paciente no le pertenece"
                 elif respuesta == "false":
                     request.session["mensaje_rojo"] = "Error al realizar la solicitud ya que el paciente no existe"
-                else:
+                elif respuesta == "manipulado":
+                    enviarNotificacionManipulacion()
                     request.session["mensaje_rojo"] = "Error de integridad ya que hubo un intento externo de manipulación de la adenda"
             else:
                 request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
