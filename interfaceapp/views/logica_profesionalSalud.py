@@ -89,7 +89,7 @@ def agregarAdendaPaciente(request, documento_profesional):
                 elif respuesta == "false":
                     request.session["mensaje_rojo"] = "Error al realizar la solicitud ya que el paciente no existe"
                 elif respuesta == "manipulado":
-                    enviarNotificacionManipulacion()
+                    #enviarNotificacionManipulacion()
                     request.session["mensaje_rojo"] = "Error de integridad ya que hubo un intento externo de manipulación de la adenda"
             else:
                 request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
@@ -287,4 +287,4 @@ class AdendaForm(forms.Form):
 class DocumentoForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
 
-enviarNotificacionManipulacion()
+#enviarNotificacionManipulacion()
