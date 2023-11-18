@@ -49,26 +49,33 @@ def consultarHistoriaPaciente(request, documento):
 
         if respuestaHttp.status_code == 200:
 
-            llaveJson = respuestaHttp.json().get("llave_codificada")
-            historiaJson = respuestaHttp.json().get("mensaje_codificado")
-            historiaJson_bytes = base64_a_bytes(historiaJson)
+            respuestaJson = respuestaHttp.json()
 
-            llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
-            llave_decodificada = base64_a_bytes(llave_decodificada.get("llave"))
+            if respuestaJson.get("mensaje") is None:
 
-            historia_decodificada = decodificarMensaje(historiaJson_bytes, llave_decodificada)
+                llaveJson = respuestaHttp.json().get("llave_codificada")
+                historiaJson = respuestaHttp.json().get("mensaje_codificado")
+                historiaJson_bytes = base64_a_bytes(historiaJson)
 
-            historia = {
-                "diagnosticos": historia_decodificada.get("diagnosticos"),
-                "tratamientos": historia_decodificada.get("tratamientos"),
-                "notas": historia_decodificada.get("notas"),
-                "adendas": []
-            }
+                llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+                llave_decodificada = base64_a_bytes(llave_decodificada.get("llave"))
 
-            for adenda in historia_decodificada.get("adendas"):
-                historia["adendas"].append(adenda)
+                historia_decodificada = decodificarMensaje(historiaJson_bytes, llave_decodificada)
 
-            request.session["usuario"]["historia_clinica"] = historia
+                historia = {
+                    "diagnosticos": historia_decodificada.get("diagnosticos"),
+                    "tratamientos": historia_decodificada.get("tratamientos"),
+                    "notas": historia_decodificada.get("notas"),
+                    "adendas": []
+                }
+
+                for adenda in historia_decodificada.get("adendas"):
+                    historia["adendas"].append(adenda)
+
+                request.session["usuario"]["historia_clinica"] = historia
+            
+            elif respuestaJson.get("mensaje") == "true":
+                request.session["mensaje_rojo"] = "Error de autorización el paciente no le pertence"
         else:
             request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
     
