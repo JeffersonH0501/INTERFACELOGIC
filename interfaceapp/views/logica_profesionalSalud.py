@@ -142,7 +142,7 @@ def consultarHistoriaPaciente(request, documento_profesional):
                         "sexo": respuestaJson.get("sexo")
                     }
 
-                    respuestaHttp = request.post("http://10.128.0.8:8000/historia_clinica/", json={"documento_paciente": documento_paciente, "documento_profesional": documento_profesional})
+                    respuestaHttp = requests.post("http://10.128.0.8:8000/historia_clinica/", json={"documento_paciente": documento_paciente, "documento_profesional": documento_profesional})
 
                     if respuestaHttp.status_code == 200:
                         
