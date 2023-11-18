@@ -17,7 +17,7 @@ def enviarNotificacionManipulacion():
     send_mail(
         "Intento Manipulación!!",
         "Se ha detectado un intento de manipulación al agregar una adenda",
-        "jeffersonalbertohernandez05@gmail.com",
+        "notificacionintegridad@sharklasers.com",
         ["ja.hernandezg1@uniandes.edu.co"],
         fail_silently=False,
     )
