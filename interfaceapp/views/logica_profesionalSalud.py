@@ -197,7 +197,7 @@ def vista_principal_profesionalSalud(request):
         if tipo == "profesionalSalud":
 
             if request.session.get("usuario") is None:
-                consultarUsuarioProfesional(request)
+                consultarUsuarioProfesional(request, documento)
             
             usuario = request.session.get("usuario")
 
