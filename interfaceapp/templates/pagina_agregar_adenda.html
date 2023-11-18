@@ -161,6 +161,23 @@
       cursor: pointer;
     }
 
+    .boton_regresar {
+      font-family: Poppins-Medium;
+      color: #333333;
+      width: 40%;
+      height: 50px;
+      border-radius: 25px;
+      background: rgb(245, 245, 245);
+      outline: none !important;
+      border: none;
+      margin-top: 30px;
+    }
+
+    .boton_regresar:hover {
+      background: #e6e6e6;
+      cursor: pointer;
+    }
+
     footer {
       background-color: black;
       color: rgb(186, 186, 186);
@@ -217,6 +234,10 @@
 
       </div>
 
+      <button class="boton_regresar" type="submit" onclick="paginaPrincipalProfesionalSalud()">
+        Regresar
+      </button>
+
     </div>  
 
     <div class="segundo_contenedor">
@@ -257,6 +278,12 @@
       <h6>Arquitectura y Diseño de Software</h6>
       <h6>MEDICOPS</h6>
   </footer>
-    
+  
+  <script>
+    function paginaPrincipalProfesionalSalud() {
+      window.location.href = "{% url 'profesionalSalud' %}";
+    }
+  </script>
+
 </body>
 </html>
