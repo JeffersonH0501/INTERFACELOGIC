@@ -87,8 +87,9 @@ def agregarAdendaPaciente(request, documento_profesional):
         
         informacion_firma = json.dumps(informacion_adenda, sort_keys=True)
         firma = hashlib.sha256(informacion_firma.encode()).hexdigest()
+        firma_codificada = jwt.encode(firma, settings.SECRET_KEY, algorithm="HS256")
 
-        informacion_adenda["firma"] = firma
+        informacion_adenda["firma"] = firma_codificada
 
         try:
             respuestaHttp = requests.post("http://10.128.0.8:8000/agregar_adenda/", json=informacion_adenda)
