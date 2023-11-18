@@ -288,7 +288,6 @@ def vista_consultar_historia(request):
 
 class AdendaForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
-    fecha = forms.CharField(label="Fecha")
     tipo = forms.CharField(label="Tipo")
     descripcion = forms.CharField(label="Descripción")
 
