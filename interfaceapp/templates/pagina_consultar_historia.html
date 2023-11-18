@@ -385,7 +385,7 @@
             <th style="width: 20%;">Tipo</th>
             <th style="width: 60%;">Descripción</th>
           </tr>
-          {% for adenda in paciente.adendas %}
+          {% for adenda in paciente.historia_clinica.adendas %}
           <tr>
             <td>{{ adenda.fecha }}</td>
             <td>{{ adenda.tipo }}</td>
