@@ -69,7 +69,7 @@ def consultarHistoriaPaciente(request, documento):
                     "adendas": []
                 }
 
-                for adenda in historia_decodificada.get("adendas"):
+                for adenda in historia_decodificada.get("adendas", []):
                     historia["adendas"].append(adenda)
 
                 request.session["usuario"]["historia_clinica"] = historia
