@@ -3,21 +3,13 @@ import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
-from base64 import urlsafe_b64encode, urlsafe_b64decode
+from cryptography.fernet import Fernet
 
-def decodificarMensaje(mensaje_codificado, llave):
 
-    ciphertext = urlsafe_b64decode(mensaje_codificado.encode())
-
-    backend = default_backend()
-    cipher = Cipher(algorithms.AES(llave), modes.CFB, backend=backend)
-    decryptor = cipher.decryptor()
-
-    decrypted_message = decryptor.update(ciphertext) + decryptor.finalize()
-
-    return decrypted_message.decode()
+def decodificarMensaje(mensaje_cifrado, llave):
+    f = Fernet(llave)
+    mensaje_descifrado = f.decrypt(mensaje_cifrado).decode()
+    return mensaje_descifrado
 
 
 def consultarUsuarioPaciente(request, documento):
