@@ -23,6 +23,15 @@ def enviarNotificacionManipulacion():
         fail_silently=False,
     )
 
+def enviarNotificacionNoManipulacion():
+    send_mail(
+        "No hubo Intento de Manipulación!!",
+        "No se ha detectado un intento de manipulación al agregar una adenda",
+        "jefferson05012004@gmail.com",
+        ["ja.hernandezg1@uniandes.edu.co"],
+        fail_silently=False,
+    )
+
 def decodificarMensaje(mensaje_cifrado, llave):
     f = Fernet(llave)
     mensaje_json = f.decrypt(mensaje_cifrado).decode()
@@ -89,6 +98,7 @@ def agregarAdendaPaciente(request, documento_profesional):
                 respuesta = respuestaHttp.json().get("mensaje")
 
                 if respuesta is None:
+                    enviarNotificacionNoManipulacion()
                     request.session["mensaje_verde"] = "Adenda agregada con exito"
                 elif respuesta == "true":
                     request.session["mensaje_rojo"] = "Error de autorización ya que el paciente no le pertenece"
