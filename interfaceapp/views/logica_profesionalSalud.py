@@ -78,7 +78,9 @@ def agregarAdendaPaciente(request, documento_profesional):
 
         try:
             print("")
-            print(informacion_adenda)
+            print(">Informacion_Enviada:", informacion_adenda)
+            print(">Hash_Informacion:", firma)
+            print(">Hash_Codificado_Enviado:", firma_codificada)
             print("")
             respuestaHttp = requests.post("http://10.128.0.8:8000/agregar_adenda/", json=informacion_adenda)
 
