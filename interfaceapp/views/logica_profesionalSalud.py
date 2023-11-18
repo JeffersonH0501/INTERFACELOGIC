@@ -14,14 +14,14 @@ from django import forms
 from datetime import datetime
 
 
-#def enviarNotificacionManipulacion():
-#    send_mail(
-#       "Intento Manipulación!!",
-#        "Se ha detectado un intento de manipulación al agregar una adenda",
-#        "notificacionintegridad@sharklasers.com",
-#        ["ja.hernandezg1@uniandes.edu.co"],
-#        fail_silently=False,
-#    )
+def enviarNotificacionManipulacion():
+    send_mail(
+       "Intento Manipulación!!",
+        "Se ha detectado un intento de manipulación al agregar una adenda",
+        "jefferson05012004@gmail.com",
+        ["ja.hernandezg1@uniandes.edu.co"],
+        fail_silently=False,
+    )
 
 def decodificarMensaje(mensaje_cifrado, llave):
     f = Fernet(llave)
@@ -90,7 +90,7 @@ def agregarAdendaPaciente(request, documento_profesional):
                 elif respuesta == "false":
                     request.session["mensaje_rojo"] = "Error al realizar la solicitud ya que el paciente no existe"
                 elif respuesta == "manipulado":
-                    #enviarNotificacionManipulacion()
+                    enviarNotificacionManipulacion()
                     request.session["mensaje_rojo"] = "Error de integridad ya que hubo un intento externo de manipulación de la adenda"
             else:
                 request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
@@ -288,4 +288,4 @@ class AdendaForm(forms.Form):
 class DocumentoForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
 
-#enviarNotificacionManipulacion()
+enviarNotificacionManipulacion()
