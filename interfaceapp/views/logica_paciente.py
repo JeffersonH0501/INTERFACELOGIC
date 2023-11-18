@@ -50,7 +50,7 @@ def consultarHistoriaPaciente(request, documento):
         if respuestaHttp.status_code == 200:
 
             llaveJson = respuestaHttp.json().get("llave_codificada")
-            historiaJson = respuestaHttp.json().get("historia_codificada")
+            historiaJson = respuestaHttp.json().get("mensaje_codificado")
             historiaJson_bytes = base64_a_bytes(historiaJson)
 
             llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
