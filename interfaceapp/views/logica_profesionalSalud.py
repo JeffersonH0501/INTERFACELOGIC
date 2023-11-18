@@ -13,14 +13,15 @@ from django.urls import reverse
 from django import forms
 from datetime import datetime
 
-def enviarNotificacionManipulacion():
-    send_mail(
-        "Intento Manipulación!!",
-        "Se ha detectado un intento de manipulación al agregar una adenda",
-        "notificacionintegridad@sharklasers.com",
-        ["ja.hernandezg1@uniandes.edu.co"],
-        fail_silently=False,
-    )
+
+#def enviarNotificacionManipulacion():
+#    send_mail(
+#       "Intento Manipulación!!",
+#        "Se ha detectado un intento de manipulación al agregar una adenda",
+#        "notificacionintegridad@sharklasers.com",
+#        ["ja.hernandezg1@uniandes.edu.co"],
+#        fail_silently=False,
+#    )
 
 def decodificarMensaje(mensaje_cifrado, llave):
     f = Fernet(llave)
