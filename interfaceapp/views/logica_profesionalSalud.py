@@ -77,6 +77,9 @@ def agregarAdendaPaciente(request, documento_profesional):
         informacion_adenda["firma_jwt"] = firma_codificada
 
         try:
+            print("")
+            print(informacion_adenda)
+            print("")
             respuestaHttp = requests.post("http://10.128.0.8:8000/agregar_adenda/", json=informacion_adenda)
 
             if respuestaHttp.status_code == 200:
@@ -287,5 +290,3 @@ class AdendaForm(forms.Form):
 
 class DocumentoForm(forms.Form):
     documento_paciente = forms.CharField(label="Documento Paciente")
-
-enviarNotificacionManipulacion()
