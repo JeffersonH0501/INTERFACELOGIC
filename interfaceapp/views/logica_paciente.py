@@ -1,4 +1,5 @@
 import jwt
+import json
 import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -8,8 +9,9 @@ from cryptography.fernet import Fernet
 
 def decodificarMensaje(mensaje_cifrado, llave):
     f = Fernet(llave)
-    mensaje_descifrado = f.decrypt(mensaje_cifrado).decode()
-    return mensaje_descifrado
+    mensaje_json = f.decrypt(mensaje_cifrado).decode()
+    mensaje = json.loads(mensaje_json)
+    return mensaje
 
 
 def consultarUsuarioPaciente(request, documento):
@@ -48,7 +50,7 @@ def consultarHistoriaPaciente(request, documento):
             llaveJson = respuestaHttp.json().get("llave_codificada")
             historiaJson = respuestaHttp.json().get("historia_codificada")
 
-            llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+            llave_decodificada = jwt.decode(llaveJson.get("llave"), settings.SECRET_KEY, algorithms=["HS256"])
             historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
 
             historia = {

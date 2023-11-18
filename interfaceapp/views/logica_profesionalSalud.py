@@ -153,7 +153,7 @@ def consultarHistoriaPaciente(request, documento_profesional):
                             llaveJson = respuestaHttp.json().get("llave_codificada")
                             historiaJson = respuestaHttp.json().get("historia_codificada")
 
-                            llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+                            llave_decodificada = jwt.decode(llaveJson.get("llave"), settings.SECRET_KEY, algorithms=["HS256"])
                             historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
 
                             historia = {
