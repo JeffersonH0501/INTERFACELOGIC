@@ -16,7 +16,7 @@ from datetime import datetime
 
 def enviarNotificacionManipulacion():
     send_mail(
-       "Intento Manipulación!!",
+        "Intento Manipulación!!",
         "Se ha detectado un intento de manipulación al agregar una adenda",
         "jefferson05012004@gmail.com",
         ["ja.hernandezg1@uniandes.edu.co"],
