@@ -1,7 +1,9 @@
 import json
+import base64
 import jwt
 import hashlib
 import smtplib
+from cryptography.fernet import Fernet
 from email.mime.text import MIMEText
 import requests
 from django.conf import settings
@@ -9,9 +11,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 from datetime import datetime
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
-from base64 import urlsafe_b64encode, urlsafe_b64decode
 
 def enviarNotificacionManipulacion():
     try:
@@ -30,19 +29,11 @@ def enviarNotificacionManipulacion():
 
     except Exception as e:print(f"Error al enviar la notificación: {str(e)}")
 
-
-def decodificarMensaje(mensaje_codificado, llave):
-
-    ciphertext = urlsafe_b64decode(mensaje_codificado.encode())
-
-    backend = default_backend()
-    cipher = Cipher(algorithms.AES(llave), modes.CFB, backend=backend)
-    decryptor = cipher.decryptor()
-
-    decrypted_message = decryptor.update(ciphertext) + decryptor.finalize()
-
-    return decrypted_message.decode()
-
+def decodificarMensaje(mensaje_cifrado, llave):
+    f = Fernet(llave)
+    mensaje_json = f.decrypt(mensaje_cifrado).decode()
+    mensaje = json.loads(mensaje_json)
+    return mensaje
 
 def consultarUsuarioProfesional(request, documento):
 
@@ -115,6 +106,8 @@ def agregarAdendaPaciente(request, documento_profesional):
     else:
         request.session["mensaje_rojo"] = "El form no es valido"
 
+def base64_a_bytes(mensaje_base64):
+    return base64.b64decode(mensaje_base64)
 
 def consultarHistoriaPaciente(request, documento_profesional):
 
@@ -153,7 +146,8 @@ def consultarHistoriaPaciente(request, documento_profesional):
                             llaveJson = respuestaHttp.json().get("llave_codificada")
                             historiaJson = respuestaHttp.json().get("historia_codificada")
 
-                            llave_decodificada = jwt.decode(llaveJson.get("llave"), settings.SECRET_KEY, algorithms=["HS256"])
+                            llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+                            llave_decodificada = base64_a_bytes(llave_decodificada.get("llave"))
                             historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
 
                             historia = {

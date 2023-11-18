@@ -1,5 +1,6 @@
 import jwt
 import json
+import base64
 import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -12,7 +13,6 @@ def decodificarMensaje(mensaje_cifrado, llave):
     mensaje_json = f.decrypt(mensaje_cifrado).decode()
     mensaje = json.loads(mensaje_json)
     return mensaje
-
 
 def consultarUsuarioPaciente(request, documento):
 
@@ -39,6 +39,8 @@ def consultarUsuarioPaciente(request, documento):
     except requests.exceptions.RequestException as e:
         request.session["mensaje_error"] = "Error de conexión con el servidor de usuarios"
 
+def base64_a_bytes(mensaje_base64):
+    return base64.b64decode(mensaje_base64)
 
 def consultarHistoriaPaciente(request, documento):
 
@@ -50,7 +52,8 @@ def consultarHistoriaPaciente(request, documento):
             llaveJson = respuestaHttp.json().get("llave_codificada")
             historiaJson = respuestaHttp.json().get("historia_codificada")
 
-            llave_decodificada = jwt.decode(llaveJson.get("llave"), settings.SECRET_KEY, algorithms=["HS256"])
+            llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
+            llave_decodificada = base64_a_bytes(llave_decodificada.get("llave"))
             historia_decodificada = decodificarMensaje(historiaJson, llave_decodificada)
 
             historia = {
