@@ -52,8 +52,8 @@ def vista_login(request):
                 mensaje_error = "Error de conexión con el servidor de autenticación"
             
         return render(request, "pagina_login.html", {"error_message": mensaje_error})
-    else:
-        return render(request, "pagina_login.html")
+    
+    return render(request, "pagina_login.html")
     
 def vista_error(request):
     mensaje_error = request.session.get("mensaje_error")
