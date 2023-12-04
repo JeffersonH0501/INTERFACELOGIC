@@ -14,7 +14,7 @@ def consultar_paciente(request, documento):
             respuestaJson = respuestaHttp.json()
             usuario = respuestaJson.get("usuario")
             request.session["usuario"] = usuario
-            
+
         else:
             request.session["mensaje_error"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
         
@@ -22,10 +22,12 @@ def consultar_paciente(request, documento):
         request.session["mensaje_error"] = "Error de conexión con el servidor de usuarios"
 
 def consultar_historia(request, documento):
+
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/historia_clinica/", json={"documento_paciente": documento})
 
         if respuestaHttp.status_code == 200:
+
             respuestaJson = respuestaHttp.json()
             historia = respuestaJson.get('historia_clinica')
             if historia:
@@ -44,9 +46,7 @@ def consultar_historia(request, documento):
 def vista_principal_paciente(request):
 
     token = request.session.get("token")
-
     if token is not None:
-
         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 
         documento = decoded_token.get("documento")
@@ -68,13 +68,10 @@ def vista_principal_paciente(request):
         
     return redirect(reverse("pagina_error"))
 
-
 def vista_historia_clinica(request):
 
     token = request.session.get("token")
-
     if token is not None:
-
         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 
         documento = decoded_token.get("documento")
@@ -83,7 +80,6 @@ def vista_historia_clinica(request):
         if tipo == "paciente":
             
             consultar_historia(request, documento)
-
             usuario = request.session.get("usuario")
 
             if usuario.get("historia_clinica") is not None:
