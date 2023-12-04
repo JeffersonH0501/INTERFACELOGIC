@@ -1,20 +1,10 @@
 import jwt
-import json
-import base64
 import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from cryptography.fernet import Fernet
 
-
-def decodificarMensaje(mensaje_cifrado, llave):
-    f = Fernet(llave)
-    mensaje_json = f.decrypt(mensaje_cifrado).decode()
-    mensaje = json.loads(mensaje_json)
-    return mensaje
-
-def consultarUsuarioPaciente(request, documento):
+def consultar_paciente(request, documento):
 
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/usuario/", json={"documento": documento})
@@ -22,66 +12,34 @@ def consultarUsuarioPaciente(request, documento):
         if respuestaHttp.status_code == 200:
 
             respuestaJson = respuestaHttp.json()
-
-            usuario = {
-                "documento": respuestaJson.get("documento"),
-                "foto": respuestaJson.get("foto"),
-                "nombre": respuestaJson.get("nombre"),
-                "edad": respuestaJson.get("edad"),
-                "telefono": respuestaJson.get("telefono"),
-                "sexo": respuestaJson.get("sexo")
-            }
-
+            usuario = respuestaJson.get("usuario")
             request.session["usuario"] = usuario
+            
         else:
             request.session["mensaje_error"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
         
     except requests.exceptions.RequestException as e:
         request.session["mensaje_error"] = "Error de conexión con el servidor de usuarios"
 
-def base64_a_bytes(mensaje_base64):
-    return base64.b64decode(mensaje_base64)
-
-def consultarHistoriaPaciente(request, documento):
-
+def consultar_historia(request, documento):
     try:
         respuestaHttp = requests.post("http://10.128.0.8:8000/historia_clinica/", json={"documento_paciente": documento})
 
         if respuestaHttp.status_code == 200:
-
             respuestaJson = respuestaHttp.json()
-
-            if respuestaJson.get("mensaje") is None:
-
-                llaveJson = respuestaHttp.json().get("llave_codificada")
-                historiaJson = respuestaHttp.json().get("mensaje_codificado")
-                historiaJson_bytes = base64_a_bytes(historiaJson)
-
-                llave_decodificada = jwt.decode(llaveJson, settings.SECRET_KEY, algorithms=["HS256"])
-                llave_decodificada = base64_a_bytes(llave_decodificada.get("llave"))
-
-                historia_decodificada = decodificarMensaje(historiaJson_bytes, llave_decodificada)
-
-                historia = {
-                    "diagnosticos": historia_decodificada.get("diagnosticos"),
-                    "tratamientos": historia_decodificada.get("tratamientos"),
-                    "notas": historia_decodificada.get("notas"),
-                    "adendas": []
-                }
-
-                for adenda in historia_decodificada.get("adendas", []):
-                    historia["adendas"].append(adenda)
-
+            historia = respuestaJson.get('historia_clinica')
+            if historia:
                 request.session["usuario"]["historia_clinica"] = historia
-            
-            elif respuestaJson.get("mensaje") == "true":
-                request.session["mensaje_rojo"] = "Error de autorización el paciente no le pertence"
+            else:
+                request.session["mensaje_rojo"] = "El paciente no cuenta con una historia clinica"
         else:
             request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
     
     except requests.exceptions.RequestException as e:
         request.session["mensaje_rojo"] = "Error de conexión con el servidor de usuarios"
 
+
+# VISTAS DE PAGINA
 
 def vista_principal_paciente(request):
 
@@ -97,7 +55,7 @@ def vista_principal_paciente(request):
         if tipo == "paciente":
             
             if request.session.get("usuario") is None:
-                consultarUsuarioPaciente(request, documento)
+                consultar_paciente(request, documento)
 
             usuario = request.session.get("usuario")
 
@@ -124,7 +82,7 @@ def vista_historia_clinica(request):
 
         if tipo == "paciente":
             
-            consultarHistoriaPaciente(request, documento)
+            consultar_historia(request, documento)
 
             usuario = request.session.get("usuario")
 
