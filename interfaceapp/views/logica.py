@@ -36,7 +36,7 @@ def vista_login(request):
                         request.session["token"] = token
 
                         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-                        tipo = descifrar_dato(decoded_token.get("tipo").encode())
+                        tipo = descifrar_dato(decoded_token.get("tipo"))
 
                         print(tipo)
                         print(decoded_token)
