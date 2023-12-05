@@ -50,6 +50,7 @@ def consultar_historia(request, documento):
             if historia is not None:
                 request.session["usuario"]["historia_clinica"] = historia
             else:
+                print("holaaa")
                 request.session["mensaje_rojo"] = "El paciente no cuenta con una historia clinica"
         else:
             request.session["mensaje_rojo"] = f"Error {respuestaHttp.status_code} con el servidor de usuarios"
@@ -102,6 +103,7 @@ def vista_historia_clinica(request):
             if usuario.get("historia_clinica") is not None:
                 return render(request, "pagina_historia_clinica.html", usuario)
             else:
+                print("me cago en todo")
                 contexto = usuario.copy()
                 contexto["mensaje_rojo"] = request.session.get("mensaje_rojo")
                 request.session.pop("mensaje_rojo", None)
