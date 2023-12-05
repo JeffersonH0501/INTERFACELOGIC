@@ -21,12 +21,12 @@ def consultar_paciente(request, documento):
             usuario = respuestaJson.get("usuario")
             
             usuario = {
-                "documento": descifrar_dato(usuario.get("documento")),
-                "foto": descifrar_dato(usuario.get("foto")),
-                "nombre": descifrar_dato(usuario.get("nombre")),
-                "edad": descifrar_dato(usuario.get("edad")),
-                "telefono": descifrar_dato(usuario.get("telefono")),
-                "sexo": descifrar_dato(usuario.get("sexo")),
+                "documento": descifrar_dato(eval(usuario.get("documento"))),
+                "foto": descifrar_dato(eval(usuario.get("foto"))),
+                "nombre": descifrar_dato(eval(usuario.get("nombre"))),
+                "edad": descifrar_dato(eval(usuario.get("edad"))),
+                "telefono": descifrar_dato(eval(usuario.get("telefono"))),
+                "sexo": descifrar_dato(eval(usuario.get("sexo"))),
             }
 
             request.session["usuario"] = usuario
