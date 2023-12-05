@@ -21,7 +21,7 @@ def consultar_paciente(request, documento):
             usuario = respuestaJson.get("usuario")
             
             usuario = {
-                "documento": descifrar_dato(eval(usuario.get("documento"))),
+                "documento": usuario.get("documento"),
                 "foto": descifrar_dato(eval(usuario.get("foto"))),
                 "nombre": descifrar_dato(eval(usuario.get("nombre"))),
                 "edad": descifrar_dato(eval(usuario.get("edad"))),
@@ -65,7 +65,7 @@ def vista_principal_paciente(request):
     if token is not None:
         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 
-        documento = descifrar_dato(eval(decoded_token.get("documento")))
+        documento = decoded_token.get("documento")
         tipo = descifrar_dato(eval(decoded_token.get("tipo")))
 
         if tipo == "paciente":
