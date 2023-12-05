@@ -65,8 +65,8 @@ def vista_principal_paciente(request):
     if token is not None:
         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 
-        documento = descifrar_dato(decoded_token.get("documento"))
-        tipo = descifrar_dato(decoded_token.get("tipo"))
+        documento = descifrar_dato(eval(decoded_token.get("documento")))
+        tipo = descifrar_dato(eval(decoded_token.get("tipo")))
 
         if tipo == "paciente":
             
