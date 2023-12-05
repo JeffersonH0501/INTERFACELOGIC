@@ -46,7 +46,7 @@ def consultar_historia(request, documento):
 
             respuestaJson = respuestaHttp.json()
             historia = respuestaJson.get('historia_clinica')
-            print(historia)
+       
             if historia is not None:
                 request.session["usuario"]["historia_clinica"] = historia
             else:
@@ -94,12 +94,11 @@ def vista_historia_clinica(request):
         documento = decoded_token.get("documento")
         tipo = descifrar_dato(eval(decoded_token.get("tipo")))
 
-        print(tipo)
         if tipo == "paciente":
             
             consultar_historia(request, documento)
             usuario = request.session.get("usuario")
-            print(usuario)
+            
             if usuario.get("historia_clinica") is not None:
                 return render(request, "pagina_historia_clinica.html", usuario)
             else:
