@@ -3,6 +3,12 @@ import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from cryptography.fernet import Fernet
+
+cipher_suite = Fernet(settings.SIMETRIC_KEY.encode())
+
+def descifrar_dato(dato_cifrado):
+    return cipher_suite.decrypt(dato_cifrado).decode()
 
 def consultar_paciente(request, documento):
 
@@ -13,6 +19,16 @@ def consultar_paciente(request, documento):
 
             respuestaJson = respuestaHttp.json()
             usuario = respuestaJson.get("usuario")
+            
+            usuario = {
+                "documento": descifrar_dato(usuario.get("documento")),
+                "foto": descifrar_dato(usuario.get("foto")),
+                "nombre": descifrar_dato(usuario.get("nombre")),
+                "edad": descifrar_dato(usuario.get("edad")),
+                "telefono": descifrar_dato(usuario.get("telefono")),
+                "sexo": descifrar_dato(usuario.get("sexo")),
+            }
+
             request.session["usuario"] = usuario
 
         else:
