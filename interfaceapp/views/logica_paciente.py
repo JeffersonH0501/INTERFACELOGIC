@@ -46,6 +46,7 @@ def consultar_historia(request, documento):
 
             respuestaJson = respuestaHttp.json()
             historia = respuestaJson.get('historia_clinica')
+            print(historia)
             if historia is not None:
                 request.session["usuario"]["historia_clinica"] = historia
             else:
