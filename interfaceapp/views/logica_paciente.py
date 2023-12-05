@@ -46,7 +46,7 @@ def consultar_historia(request, documento):
 
             respuestaJson = respuestaHttp.json()
             historia = respuestaJson.get('historia_clinica')
-            if historia:
+            if historia is not None:
                 request.session["usuario"]["historia_clinica"] = historia
             else:
                 request.session["mensaje_rojo"] = "El paciente no cuenta con una historia clinica"
