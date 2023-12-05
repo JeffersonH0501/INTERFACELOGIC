@@ -67,5 +67,3 @@ def vista_error(request):
 class LoginForm(forms.Form):
     documento = forms.CharField(label="Documento")
     clave = forms.CharField(label="Clave", widget=forms.PasswordInput)
-
-
