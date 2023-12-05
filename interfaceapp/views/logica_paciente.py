@@ -91,7 +91,7 @@ def vista_historia_clinica(request):
         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 
         documento = decoded_token.get("documento")
-        tipo = decoded_token.get("tipo")
+        tipo = descifrar_dato(eval(decoded_token.get("tipo")))
 
         if tipo == "paciente":
             
