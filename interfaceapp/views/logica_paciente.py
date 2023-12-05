@@ -7,8 +7,8 @@ from cryptography.fernet import Fernet
 
 cipher_suite = Fernet(settings.SIMETRIC_KEY.encode())
 
-def descifrar_dato(dato_cifrado):
-    return cipher_suite.decrypt(dato_cifrado).decode()
+def descifrar_dato(dato):
+    return cipher_suite.decrypt(dato).decode()
 
 def consultar_paciente(request, documento):
 
@@ -65,8 +65,8 @@ def vista_principal_paciente(request):
     if token is not None:
         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 
-        documento = decoded_token.get("documento")
-        tipo = decoded_token.get("tipo")
+        documento = descifrar_dato(decoded_token.get("documento"))
+        tipo = descifrar_dato(decoded_token.get("tipo"))
 
         if tipo == "paciente":
             

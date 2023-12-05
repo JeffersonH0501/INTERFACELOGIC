@@ -4,6 +4,12 @@ import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
+from cryptography.fernet import Fernet
+
+cipher_suite = Fernet(settings.SIMETRIC_KEY.encode())
+
+def descifrar_dato(dato):
+    return cipher_suite.decrypt(dato).decode()
 
 def vista_login(request):
 
@@ -30,7 +36,7 @@ def vista_login(request):
                         request.session["token"] = token
 
                         decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-                        tipo = decoded_token.get("tipo")
+                        tipo = descifrar_dato(decoded_token.get("tipo"))
 
                         print(decoded_token)
 
